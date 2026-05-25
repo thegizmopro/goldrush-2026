@@ -413,16 +413,6 @@
     .panel-slideshow-thumbs img.active { border-color: #c8a96e; opacity: 1; }
 
     /* Note banner */
-    .dev-note {
-      max-width: 800px;
-      margin: 1rem auto 0;
-      background: #fff3cd;
-      border: 1px solid #ffc107;
-      border-radius: 4px;
-      padding: 0.75rem 1rem;
-      font-size: 0.8rem;
-      color: #856404;
-    }
   </style>
 </head>
 <body>
@@ -441,12 +431,6 @@
 </nav>
 
 <h1>North Bloomfield — Gold Rush Town</h1>
-
-<div class="dev-note">
-  <strong>Dev note:</strong> Pins calibrated to cartoon-town-labeled.jpg — 7 labeled locations.
-  Fine-tune <code>left%</code> / <code>top%</code> values in CSS if any pin needs a nudge.
-  Replace photo placeholders with real images once photos are sorted into subfolders.
-</div>
 
 <div class="map-wrapper">
   <img src="images/map/cartoon-town-labeled.jpg" alt="North Bloomfield Historical Town Map" id="map-img">
@@ -785,7 +769,8 @@
     saloonImg.src = saloonSlides[saloonCur];
     saloonCounter.textContent = (saloonCur + 1) + " of " + saloonSlides.length;
     saloonThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === saloonCur));
-    saloonThumbs.querySelectorAll("img")[saloonCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (saloonCur !== 0 || saloonImg.dataset.init) saloonThumbs.querySelectorAll("img")[saloonCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    saloonImg.dataset.init = "1";
   }
 
   function saloonSlide(d) { saloonGoTo(saloonCur + d); }
@@ -821,7 +806,8 @@
     blacksmithImg.src = blacksmithSlides[blacksmithCur];
     blacksmithCounter.textContent = (blacksmithCur + 1) + " of " + blacksmithSlides.length;
     blacksmithThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === blacksmithCur));
-    blacksmithThumbs.querySelectorAll("img")[blacksmithCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (blacksmithCur !== 0 || blacksmithImg.dataset.init) blacksmithThumbs.querySelectorAll("img")[blacksmithCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    blacksmithImg.dataset.init = "1";
   }
 
   function blacksmithSlide(d) { blacksmithGoTo(blacksmithCur + d); }
@@ -859,7 +845,8 @@
     creekImg.src = creekSlides[creekCur];
     creekCounter.textContent = (creekCur + 1) + " of " + creekSlides.length;
     creekThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === creekCur));
-    creekThumbs.querySelectorAll("img")[creekCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (creekCur !== 0 || creekImg.dataset.init) creekThumbs.querySelectorAll("img")[creekCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    creekImg.dataset.init = "1";
   }
 
   function creekSlide(d) { creekGoTo(creekCur + d); }
@@ -890,7 +877,8 @@
     storeImg.src = storeSlides[storeCur];
     storeCounter.textContent = (storeCur + 1) + " of " + storeSlides.length;
     storeThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === storeCur));
-    storeThumbs.querySelectorAll("img")[storeCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (storeCur !== 0 || storeImg.dataset.init) storeThumbs.querySelectorAll("img")[storeCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    storeImg.dataset.init = "1";
   }
 
   function storeSlide(d) { storeGoTo(storeCur + d); }
@@ -919,7 +907,8 @@
     pharmacyImg.src = pharmacySlides[pharmacyCur];
     pharmacyCounter.textContent = (pharmacyCur + 1) + " of " + pharmacySlides.length;
     pharmacyThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === pharmacyCur));
-    pharmacyThumbs.querySelectorAll("img")[pharmacyCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (pharmacyCur !== 0 || pharmacyImg.dataset.init) pharmacyThumbs.querySelectorAll("img")[pharmacyCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    pharmacyImg.dataset.init = "1";
   }
 
   function pharmacySlide(d) { pharmacyGoTo(pharmacyCur + d); }
@@ -956,7 +945,8 @@
     museumImg.src = museumSlides[museumCur];
     museumCounter.textContent = (museumCur + 1) + " of " + museumSlides.length;
     museumThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === museumCur));
-    museumThumbs.querySelectorAll("img")[museumCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (museumCur !== 0 || museumImg.dataset.init) museumThumbs.querySelectorAll("img")[museumCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    museumImg.dataset.init = "1";
   }
 
   function museumSlide(d) { museumGoTo(museumCur + d); }

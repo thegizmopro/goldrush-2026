@@ -1195,7 +1195,8 @@
     img.src = slides[cur];
     counter.textContent = (cur + 1) + " of " + slides.length;
     thumbsEl.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === cur));
-    thumbsEl.querySelectorAll("img")[cur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (cur !== 0 || mainImg.dataset.init) thumbsEl.querySelectorAll("img")[cur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    mainImg.dataset.init = "1";
   }
 
   function slideMove(d) { goTo(cur + d); }

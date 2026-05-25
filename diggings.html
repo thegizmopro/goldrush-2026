@@ -1142,7 +1142,8 @@
     yubaImg.src = yubaSlides[yubaCur];
     yubaCounter.textContent = (yubaCur + 1) + " of " + yubaSlides.length;
     yubaThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === yubaCur));
-    yubaThumbs.querySelectorAll("img")[yubaCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (yubaCur !== 0 || yubaImg.dataset.init) yubaThumbs.querySelectorAll("img")[yubaCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    yubaImg.dataset.init = "1";
   }
 
   function yubaSlide(d) { yubaGoTo(yubaCur + d); }

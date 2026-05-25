@@ -925,7 +925,8 @@
     groupImg.src = groupSlides[groupCur];
     groupCounter.textContent = (groupCur + 1) + " of " + groupSlides.length;
     groupThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === groupCur));
-    groupThumbs.querySelectorAll("img")[groupCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (groupCur !== 0 || groupImg.dataset.init) groupThumbs.querySelectorAll("img")[groupCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    groupImg.dataset.init = "1";
   }
 
   function groupSlide(d) { groupGoTo(groupCur + d); }
