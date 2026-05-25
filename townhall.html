@@ -144,6 +144,33 @@
       .aside-card-inner {
         grid-template-columns: 1fr;
       }
+
+      /* Force all grids to single column */
+      [class*="-grid"],
+      [class*="-cards"],
+      [class*="-strip"],
+      [class*="-split"],
+      [class*="-row"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Prevent all children from overflowing */
+      body > * {
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+
+      /* Constrain text inside cards */
+      p, h1, h2, h3, h4, h5, h6, li, blockquote, td, th, span, a {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+      }
+
+      /* Prevent any element from being wider than viewport */
+      *, *::before, *::after {
+        max-width: 100vw;
+      }
     }
 
     /* ── Page header ──────────────────────────────────────────── */

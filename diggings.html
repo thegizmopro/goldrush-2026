@@ -26,6 +26,8 @@
       line-height: 1.7;
       overflow-x: hidden;
       max-width: 100vw;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     /* ── Nav ──────────────────────────────────────────────────── */
@@ -151,6 +153,69 @@
       .slideshow-thumbs img {
         width: 54px;
         height: 40px;
+      }
+
+      /* Force all grids to single column and prevent overflow */
+      .stats-grid,
+      .damage-grid,
+      .eyewitness,
+      .method-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .damage-card,
+      .eyewitness-card,
+      .method-card,
+      .stat {
+        overflow: hidden;
+        min-width: 0;
+      }
+
+      .damage-card p,
+      .damage-card h4,
+      .method-card p,
+      .method-card h4,
+      .eyewitness-card blockquote {
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .photo-strip {
+        flex-wrap: wrap;
+      }
+
+      .photo-strip img,
+      .photo-placeholder {
+        flex: 1 1 100%;
+        height: auto;
+        max-height: 200px;
+      }
+
+      /* Force all grids to single column */
+      [class*="-grid"],
+      [class*="-cards"],
+      [class*="-strip"],
+      [class*="-split"],
+      [class*="-row"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Prevent all children from overflowing */
+      body > * {
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+
+      /* Constrain text inside cards */
+      p, h1, h2, h3, h4, h5, h6, li, blockquote, td, th, span, a {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+      }
+
+      /* Prevent any element from being wider than viewport */
+      *, *::before, *::after {
+        max-width: 100vw;
       }
     }
 
