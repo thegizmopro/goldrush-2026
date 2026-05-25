@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Diggings — Gold Rush 2026</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:   #c8a96e;
+      --dark:   #3a2a1a;
+      --brown:  #5c3a1e;
+      --cream:  #f5efe0;
+      --warm:   #fff8ec;
+      --red:    #c0392b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      font-family: Georgia, serif;
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      background: var(--brown);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.75rem 0;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      display: block;
+      color: #e8dcc8;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 4rem 2rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '⛰';
+      position: absolute;
+      font-size: 20rem;
+      opacity: 0.04;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .page-header .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--cream);
+      border: none;
+      padding: 0;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .page-header p {
+      color: #d4c4a8;
+      font-size: 1rem;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* ── Section divider ──────────────────────────────────────── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 900px;
+      margin: 3.5rem auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .section-divider h2 {
+      font-size: 1.4rem;
+      color: var(--brown);
+      white-space: nowrap;
+    }
+
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    /* ── Prose ────────────────────────────────────────────────── */
+    .prose {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .prose p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .prose p strong { color: var(--brown); }
+
+    /* ── Photo strip ──────────────────────────────────────────── */
+    .photo-strip {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .photo-strip img {
+      height: 220px;
+      flex: 1 1 240px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 2px solid var(--gold);
+    }
+
+    .photo-placeholder {
+      height: 220px;
+      flex: 1 1 240px;
+      background: #e8dcc8;
+      border-radius: 4px;
+      border: 2px dashed var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #a09070;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* ── Scale block ──────────────────────────────────────────── */
+    .scale-block {
+      background: var(--dark);
+      padding: 4rem 2rem;
+      margin: 3rem 0;
+    }
+
+    .scale-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .scale-inner h2 {
+      font-size: 1.4rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .scale-inner .sub {
+      color: #a09080;
+      font-size: 0.85rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat .number {
+      font-size: 2.4rem;
+      font-weight: bold;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat .label {
+      font-size: 0.8rem;
+      color: #c8b090;
+      line-height: 1.4;
+    }
+
+    .stat .unit {
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    /* comparison bar */
+    .comparison {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 6px;
+      padding: 1.5rem 1.75rem;
+    }
+
+    .comparison h3 {
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .comp-row {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      font-size: 0.82rem;
+    }
+
+    .comp-label { color: #c8b090; }
+
+    .comp-bar-wrap {
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      height: 14px;
+      overflow: hidden;
+    }
+
+    .comp-bar {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .comp-value {
+      color: var(--gold);
+      font-size: 0.8rem;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    /* ── Invention section ────────────────────────────────────── */
+    .invention {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .invention-timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .invention-timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--gold);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 0.4rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--cream);
+    }
+
+    .timeline-item .year {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-item h4 {
+      font-size: 1rem;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-item p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ── Mining evolution ─────────────────────────────────────── */
+    .evolution {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .method-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .method-card {
+      background: var(--warm);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      padding: 1.25rem;
+      position: relative;
+    }
+
+    .method-card .step {
+      position: absolute;
+      top: -12px;
+      left: 1rem;
+      background: var(--brown);
+      color: var(--gold);
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .method-card .icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+
+    .method-card h4 {
+      font-size: 0.95rem;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+
+    .method-card .volume {
+      font-size: 0.8rem;
+      color: var(--red);
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+    }
+
+    .method-card p {
+      font-size: 0.82rem;
+      color: #5a4020;
+      line-height: 1.5;
+    }
+
+    /* ── The water system ─────────────────────────────────────── */
+    .water-system {
+      background: var(--warm);
+      border-top: 3px solid var(--gold);
+      border-bottom: 3px solid var(--gold);
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+    }
+
+    .water-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 640px) {
+      .water-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .comp-row { grid-template-columns: 110px 1fr auto; }
+    }
+
+    .water-inner h2 {
+      font-size: 1.3rem;
+      color: var(--brown);
+      margin-bottom: 1rem;
+    }
+
+    .water-inner p {
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .water-inner ul {
+      padding-left: 1.4rem;
+      font-size: 0.88rem;
+      line-height: 1.9;
+    }
+
+    .water-inner ul li strong { color: var(--brown); }
+
+    /* ── Damage section ───────────────────────────────────────── */
+    .damage {
+      background: #1a0a00;
+      padding: 4rem 2rem;
+      margin: 3rem 0;
+    }
+
+    .damage-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .damage-inner h2 {
+      font-size: 1.4rem;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+
+    .damage-inner .sub {
+      color: #8a7060;
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .damage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .damage-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(192,57,43,0.3);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .damage-card h4 {
+      font-size: 0.9rem;
+      color: #e8a090;
+      margin-bottom: 0.5rem;
+    }
+
+    .damage-card p {
+      font-size: 0.85rem;
+      color: #c8b0a0;
+      line-height: 1.55;
+    }
+
+    /* eyewitness quotes */
+    .eyewitness {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .eyewitness-card {
+      background: rgba(255,255,255,0.03);
+      border-left: 3px solid rgba(200,169,110,0.4);
+      padding: 1rem 1.25rem;
+    }
+
+    .eyewitness-card blockquote {
+      font-style: italic;
+      color: #d4c4a8;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .eyewitness-card .attribution {
+      font-size: 0.72rem;
+      color: #7a6a5a;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Inventors fate ───────────────────────────────────────── */
+    .fate {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .fate-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 560px) {
+      .fate-split { grid-template-columns: 1fr; }
+    }
+
+    .fate-card {
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .fate-card-head {
+      padding: 1rem 1.25rem;
+      color: var(--cream);
+    }
+
+    .fate-card-head h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
+    .fate-card-head .role { font-size: 0.75rem; opacity: 0.8; }
+
+    .fate-card-body {
+      padding: 1.1rem 1.25rem;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .fate-chabot .fate-card-head  { background: #1a4020; }
+    .fate-chabot .fate-card-body  { background: #e8f0e8; color: #1a3010; }
+    .fate-matteson .fate-card-head { background: #401a1a; }
+    .fate-matteson .fate-card-body { background: #f0e8e8; color: #301010; }
+
+    /* ── Nisenan section ──────────────────────────────────────── */
+    .nisenan {
+      max-width: 720px;
+      margin: 3rem auto;
+      padding: 0 2rem 0 3rem;
+      border-left: 4px solid var(--gold);
+    }
+
+    .nisenan h2 {
+      font-size: 1.2rem;
+      color: var(--brown);
+      margin-bottom: 0.75rem;
+    }
+
+    .nisenan p {
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .nisenan blockquote {
+      font-style: italic;
+      color: var(--brown);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--gold);
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .nisenan blockquote cite {
+      display: block;
+      font-size: 0.75rem;
+      font-style: normal;
+      opacity: 0.7;
+      margin-top: 0.4rem;
+    }
+
+    /* ── Page nav ─────────────────────────────────────────────── */
+    .page-nav {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .page-nav a {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      border: 2px solid var(--brown);
+      border-radius: 4px;
+      color: var(--brown);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .page-nav a:hover { background: var(--brown); color: var(--cream); }
+
+    .page-nav .next {
+      background: var(--brown);
+      color: var(--cream);
+    }
+
+    .page-nav .next:hover {
+      background: var(--dark);
+      border-color: var(--dark);
+    }
+
+    /* ── Slideshow ───────────────────────────────────────────────── */
+    .slideshow-wrap {
+      background: #1a1008;
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+    }
+    .slideshow-header { max-width: 900px; margin: 0 auto 1.5rem; }
+    .slideshow-header h2 { color: var(--gold); font-size: 1.3rem; margin-bottom: 0.3rem; }
+    .slideshow-sub { color: #a09080; font-size: 0.8rem; }
+    .slideshow-stage { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 1rem; }
+    .slideshow-stage img {
+      flex: 1; max-height: 560px; width: 100%; object-fit: contain;
+      border-radius: 4px; border: 2px solid var(--gold); background: #000; display: block;
+    }
+    .slide-btn {
+      background: rgba(200,169,110,0.15); border: 2px solid var(--gold); color: var(--gold);
+      font-size: 1.5rem; width: 48px; height: 48px; border-radius: 50%;
+      cursor: pointer; flex-shrink: 0; transition: background 0.15s;
+    }
+    .slide-btn:hover { background: rgba(200,169,110,0.35); }
+    .slideshow-thumbs { max-width: 900px; margin: 1.25rem auto 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .slideshow-thumbs img {
+      width: 72px; height: 54px; object-fit: cover; border-radius: 3px;
+      border: 2px solid transparent; cursor: pointer; opacity: 0.6;
+      transition: opacity 0.15s, border-color 0.15s;
+    }
+    .slideshow-thumbs img:hover { opacity: 1; }
+    .slideshow-thumbs img.active { border-color: var(--gold); opacity: 1; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: #a09080;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+    }
+
+    footer strong { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <a class="nav-logo" href="index.html">⛏ Gold Rush 2026</a>
+  <ul class="nav-links">
+    <li><a href="camp.html">Arrival &amp; Camp</a></li>
+    <li><a href="map.html">The Town</a></li>
+    <li><a href="diggings.html" class="active">The Diggings</a></li>
+    <li><a href="townhall.html">Town Hall</a></li>
+    <li><a href="characters.html">Characters</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- ── Page header ── -->
+<header class="page-header">
+  <p class="eyebrow">Act II · Thursday Afternoon, May 14</p>
+  <h1>The Diggings</h1>
+  <p>Stand at the overlook and try to understand what you're looking at. The numbers help — but only a little.</p>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- THE OVERLOOK                                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="prose" style="margin-top:3rem">
+  <p>On Thursday afternoon, after the town tour and the gold panning, the groups drove up to the <strong>Malakoff Diggings overlook</strong>. You step out of the car and there it is: a pit the size of a small city, carved entirely by water.</p>
+  <p>No dynamite brought these walls down. No shovels removed this earth. <strong>Water did this.</strong> Water under pressure, fired from iron nozzles, aimed at hillsides for eighteen years straight.</p>
+</div>
+
+<div class="photo-strip">
+  <img src="images/diggings/IMG_0996_result_result.webp" alt="Malakoff Diggings">
+  <img src="images/diggings/IMG_1003_result_result.webp" alt="Malakoff Diggings">
+  <img src="images/diggings/PXL_20260515_182330468_result.webp" alt="Malakoff Diggings">
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- THE SCALE                                                    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<section class="scale-block">
+  <div class="scale-inner">
+    <h2>The Scale</h2>
+    <p class="sub">The Malakoff pit, 1866–1884</p>
+
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="number">6,800<span class="unit">ft</span></div>
+        <div class="label">long — longer than 20 football fields end to end</div>
+      </div>
+      <div class="stat">
+        <div class="number">3,800<span class="unit">ft</span></div>
+        <div class="label">wide — more than half a mile across</div>
+      </div>
+      <div class="stat">
+        <div class="number">600<span class="unit">ft</span></div>
+        <div class="label">deep — taller than the Washington Monument</div>
+      </div>
+      <div class="stat">
+        <div class="number">41<span class="unit">M</span></div>
+        <div class="label">cubic yards of earth excavated — all of it by water</div>
+      </div>
+      <div class="stat">
+        <div class="number">18</div>
+        <div class="label">years of continuous operation, 24 hours a day</div>
+      </div>
+      <div class="stat">
+        <div class="number">$3.5<span class="unit">M</span></div>
+        <div class="label">in gold recovered — at $17 per ounce</div>
+      </div>
+    </div>
+
+    <div class="comparison">
+      <h3>How much gold was in the gravel?</h3>
+      <div class="comp-row">
+        <span class="comp-label">Gold in gravel</span>
+        <div class="comp-bar-wrap"><div class="comp-bar" style="width:0.0001%"></div></div>
+        <span class="comp-value">1 in 12,000,000</span>
+      </div>
+      <div class="comp-row">
+        <span class="comp-label">Sand in beach sand</span>
+        <div class="comp-bar-wrap"><div class="comp-bar" style="width:100%"></div></div>
+        <span class="comp-value">1,000,000 in 1,000,000</span>
+      </div>
+      <p style="color:#a09080;font-size:0.78rem;margin-top:0.75rem">One part gold per twelve million parts of rock and dirt. The monitors washed fifty thousand tons of gravel every single day to find it.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- THE INVENTION                                                -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-divider">
+  <h2>How It Was Invented</h2>
+</div>
+
+<div class="invention">
+  <div class="prose" style="padding:0;margin:0 0 1.5rem">
+    <p>Three men met in Sacramento in the spring of 1852 and decided to try their luck in the gold fields. None of them planned to change California forever. They were just trying to make a living.</p>
+  </div>
+
+  <div class="invention-timeline">
+
+    <div class="timeline-item">
+      <p class="year">Spring 1852</p>
+      <h4>The Canvas Hose</h4>
+      <p><strong>Anthony Chabot</strong> — an engineer — made a 100-foot hose from strips of saddlebag canvas while waiting for rains. His partner Eli Miller built a three-foot funnel. For the first time, they could bring water <em>to</em> the diggings instead of carrying excavated gravel to the water. Productivity jumped immediately.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="year">Late 1852</p>
+      <h4>The Nozzle — Hydraulic Mining Is Born</h4>
+      <p><strong>Edward Matteson</strong> suggested attaching another funnel — turned around — to the discharge end of the hose. Miller fabricated a three-foot nozzle with an inch-and-a-half outlet. The pressure transformed. A hillside 500 feet away crumbled and washed into the sluice. <strong>Hydraulic mining was born.</strong></p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="year">1858–1876</p>
+      <h4>The Malakoff Operation Scales Up</h4>
+      <p>Julius Poquillion bought 1,535 acres of abandoned claims. San Francisco investors backed the <strong>North Bloomfield Gravel Mining Company</strong>. They built 40 miles of ditches and flumes, a drain tunnel through a mile of bedrock, and deployed seven full-scale Craig monitors running 24 hours a day. The largest hydraulic mining operation in the world.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="year">January 7, 1884</p>
+      <h4>The Sawyer Decision</h4>
+      <p>Judge Lorenzo Sawyer permanently enjoined the company from dumping tailings into the Yuba River. The monitors shut down. The first environmental ruling in United States history ended eighteen years of continuous operation. <a href="townhall.html" style="color:var(--brown)">Read the full Town Hall story →</a></p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MINING EVOLUTION                                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-divider">
+  <h2>From Pan to Monitor</h2>
+</div>
+
+<div class="evolution">
+  <div class="prose" style="padding:0;margin:0 0 0.5rem">
+    <p>Gold panning worked. It was just slow. Every improvement that followed was invented for the same reason: move more gravel, find more gold, faster. Each step worked — and each step made the next problem bigger.</p>
+  </div>
+
+  <div class="method-cards">
+
+    <div class="method-card">
+      <span class="step">Step 1</span>
+      <div class="icon">🥘</div>
+      <h4>Gold Pan</h4>
+      <div class="volume">½ cubic yard / day</div>
+      <p>Swirl water in a shallow pan, pour off the light material, watch for color at the bottom. Precise. Backbreaking. One person, one pan, one claim.</p>
+    </div>
+
+    <div class="method-card">
+      <span class="step">Step 2</span>
+      <div class="icon">🪣</div>
+      <h4>Rocker Box</h4>
+      <div class="volume">8× the pan</div>
+      <p>A short sluice box that rocks. Feed gravel in one end, water washes through, gold catches on riffles at the bottom. Two or three miners working together.</p>
+    </div>
+
+    <div class="method-card">
+      <span class="step">Step 3</span>
+      <div class="icon">🌊</div>
+      <h4>Sluice / Long Tom</h4>
+      <div class="volume">16× the pan</div>
+      <p>A long wooden box with a continuous flow of water. Gravel shoveled in the top, gold trapped by wooden riffles along the bottom. Half as precise, sixteen times the volume.</p>
+    </div>
+
+    <div class="method-card">
+      <span class="step">Step 4</span>
+      <div class="icon">💥</div>
+      <h4>Hydraulic Monitor</h4>
+      <div class="volume">50,000 tons / day</div>
+      <p>A water cannon on a swivel, fed by 40 miles of ditches, firing at 500 PSI. One million gallons per hour. Entire hillsides dissolved and washed into sluices below. And then into the rivers.</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- THE WATER SYSTEM                                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<section class="water-system">
+  <div class="water-inner">
+    <div>
+      <h2>The Water System</h2>
+      <p>A hydraulic monitor is only as powerful as the water behind it. The Malakoff operation needed an enormous, constant supply of water at high elevation — so they built an engineering system to match the scale of the mine.</p>
+      <p>The <strong>Bowman Ditch</strong> carried water 40 miles from the headwaters of the Yuba River at Bowman Reservoir to the mine. Every foot of elevation drop in an enclosed pipe creates roughly half a pound of pressure. By the time the water reached the monitors, it had built to <strong>500 PSI</strong> — the same pressure as a modern industrial power washer, running continuously, from seven nozzles at once.</p>
+      <p>The ditch was built in 1869 by <strong>800 Chinese workers and 300 white workers</strong>. Many of those original ditches and flumes were later purchased by PG&E to generate electricity. Some are still in use today.</p>
+    </div>
+    <div>
+      <h2>By the numbers</h2>
+      <ul>
+        <li><strong>40 miles</strong> of ditches, flumes, and pipelines</li>
+        <li><strong>5 feet wide</strong> at the bottom of the Bowman Ditch</li>
+        <li><strong>3.5 feet deep</strong>, graded 16 feet per mile</li>
+        <li><strong>Bowman Reservoir:</strong> 7.5 billion gallons capacity</li>
+        <li><strong>500 PSI</strong> at the monitor nozzle</li>
+        <li><strong>16,000 gallons per minute</strong> per monitor</li>
+        <li><strong>7 monitors</strong> running simultaneously at peak</li>
+        <li><strong>16 billion gallons</strong> of water used per year</li>
+        <li><strong>1.5 tons</strong> — weight of the Hendy Giant monitor</li>
+        <li><strong>7,878 feet</strong> — length of the drain tunnel through bedrock</li>
+        <li><strong>15 crews</strong> digging simultaneously, from 8 shafts</li>
+        <li><strong>Nov. 15, 1874</strong> — drain tunnel completed</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- THE DAMAGE                                                   -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<section class="damage">
+  <div class="damage-inner">
+    <h2>What It Destroyed</h2>
+    <p class="sub">The tailings didn't stay in the mountains.</p>
+
+    <div class="damage-grid">
+
+      <div class="damage-card">
+        <h4>The Rivers</h4>
+        <p>The Yuba River had been a swift, clear mountain torrent. By 1868, its bed had been raised <strong>50 feet above its 1849 level</strong> by sediment. It once had trout. By the 1870s, it was a turbid yellow-grey stream. Salmon ran up the Yuba, Feather, and American Rivers — until their spawning beds were buried. The fish became <strong>extinct in those rivers</strong>.</p>
+      </div>
+
+      <div class="damage-card">
+        <h4>The Farms</h4>
+        <p>Tailings flowed downstream and spread across the Central Valley. <strong>18,000 acres of fertile farmland</strong> were buried under feet of mining debris — sand, gravel, and grey slickens. Orchards, gardens, fields, and homes were swallowed. Farmers who had built their livelihoods there watched everything disappear under a creeping grey tide.</p>
+      </div>
+
+      <div class="damage-card">
+        <h4>The Cities</h4>
+        <p>Marysville flooded catastrophically in 1875 — surrounded by levees, floodwaters filled the city like a bowl. Sacramento flooded repeatedly. The Sacramento River's navigable channel filled with silt. Governor Perkins warned in 1881 that entire cities would "at no distant date be rendered uninhabitable" if the debris wasn't stopped.</p>
+      </div>
+
+      <div class="damage-card">
+        <h4>The Bay</h4>
+        <p>The slickens didn't stop at the valley. Fine sediment suspended in the rivers traveled all the way to <strong>San Francisco Bay</strong>, where it began silting up navigation channels. The impact of one mine in the Sierra Nevada was measurable 150 miles away in the ocean.</p>
+      </div>
+
+    </div>
+
+    <div class="eyewitness">
+
+      <div class="eyewitness-card">
+        <blockquote>"Tornado, flood, earthquake and volcano combined could hardly make greater havoc, spread wider ruin and wreck, than are to be seen everywhere in the track of the larger gold-washing operations."</blockquote>
+        <p class="attribution">— Samuel Bowles, 1868</p>
+      </div>
+
+      <div class="eyewitness-card">
+        <blockquote>"The Yuba River was once, I am told by old residents, a swift and clear mountain torrent. It is now a turbid stream whose bed has been raised not less than fifty feet above its level in 1849. It once contained trout, but now I imagine a catfish would die in it."</blockquote>
+        <p class="attribution">— Charles Nordhoff, 1872</p>
+      </div>
+
+      <div class="eyewitness-card">
+        <blockquote>"By no other means does man more completely change the face of nature than by this process. Hills melt away and disappear under its influence, every winter's freshets carrying portions of the detritus to lower and yet lower points."</blockquote>
+        <p class="attribution">— Titus Cronise, 1868</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TWO INVENTORS, TWO FATES                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-divider">
+  <h2>Same Invention. Two Fates.</h2>
+</div>
+
+<div class="fate">
+  <div class="prose" style="padding:0;margin:0 0 1.5rem">
+    <p>Anthony Chabot and Edward Matteson invented hydraulic mining together in 1852. Their lives afterward went in opposite directions.</p>
+  </div>
+
+  <div class="fate-split">
+
+    <div class="fate-card fate-chabot">
+      <div class="fate-card-head">
+        <h3>Anthony Chabot</h3>
+        <p class="role">The canvas hose · San Francisco water systems</p>
+      </div>
+      <div class="fate-card-body">
+        <p>Left the gold fields in 1856. Created San Francisco's first regular water system (1858). Developed water systems for Portland and Milwaukee. Built the dam on San Leandro Creek — now Lake Chabot. Largely responsible for water systems in Oakland and San Jose.</p>
+        <p><strong>Died a multimillionaire in 1888.</strong> Left over $85,000 to Bay Area charities. Chabot Observatory is named after him.</p>
+      </div>
+    </div>
+
+    <div class="fate-card fate-matteson">
+      <div class="fate-card-head">
+        <h3>Edward Matteson</h3>
+        <p class="role">The nozzle · four follow-on inventions</p>
+      </div>
+      <div class="fate-card-body">
+        <p>Stayed in the gold fields. Invented four more devices — a hydraulic derrick for moving boulders, a steel bar platform for prying loose cemented materials, a device for keeping debris out of hydraulic intakes. Never sought patent rights for any of it.</p>
+        <p><strong>Died a poor man in Nevada City in 1903. His gravesite is still unknown.</strong></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- THE NISENAN                                                  -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="nisenan">
+  <h2>Before the mine — the Nisenan</h2>
+  <p>The Malakoff pit sits within the territory of the <strong>Hill Nisenan</strong>. Their territory once extended from the lower Yuba, American, and Feather Rivers east to the Sierra crest. They lived in multi-family villages below 3,000 feet, spreading to high camps in spring and summer to hunt and gather food.</p>
+  <p>First contact with Spanish in 1808. The malaria epidemic of 1833 killed many. The Gold Rush delivered the final blow — miners overran their territory, brought disease, and disrupted the harvest patterns the Nisenan had maintained for generations. The mine that became Malakoff was built on land that had belonged to them.</p>
+  <p>During and after the Gold Rush, bounty hunting was sanctioned by the California Legislature — $100 per person killed, organized militias of local merchants and ranchers. Children were taken by force to boarding schools where speaking their language resulted in beatings, isolation, and withholding of food.</p>
+  <blockquote>
+    "You know how I was raised? In a boarding school, being slapped across the face, beaten for being an Indian, feeling ashamed of the color of my skin."
+    <cite>— Unidentified Yurok elder</cite>
+  </blockquote>
+  <p style="margin-top:0.75rem">The Sawyer Decision of 1884 protected the rivers and the farms. There was no analogous ruling protecting the Nisenan. The surviving Nisenan — known as the Southern Maidu in Nevada County — are still seeking federal tribal recognition.</p>
+</div>
+
+<div class="photo-strip">
+  <img src="images/yuba-river/20260513_130058_result.webp" alt="Yuba River">
+  <img src="images/yuba-river/IMG_0830_result_result.webp" alt="Yuba River">
+</div>
+
+<div class="slideshow-wrap">
+  <div class="slideshow-header">
+    <h2>Yuba River Photos</h2>
+    <p class="slideshow-sub">Use arrows or keyboard ← → to browse · <span id="yuba-counter"></span></p>
+  </div>
+  <div class="slideshow-stage">
+    <button class="slide-btn" onclick="yubaSlide(-1)">&#8592;</button>
+    <img id="yuba-img" src="" alt="Yuba River photo">
+    <button class="slide-btn" onclick="yubaSlide(1)">&#8594;</button>
+  </div>
+  <div class="slideshow-thumbs" id="yuba-thumbs"></div>
+</div>
+
+<script>
+  const yubaSlides = [
+    "20260513_130058_result.webp","20260513_130106_result.webp","20260513_130124_result.webp",
+    "20260513_130126_result.webp","20260513_130135_result.webp","20260513_130358_result.webp",
+    "20260513_130400_result.webp","IMG_0830_result_result.webp","IMG_0831_result_result.webp",
+    "IMG_1026_result_result.webp","IMG_3295_result_result.webp","IMG_9531_result_result.webp"
+  ].map(f => "images/yuba-river/" + f);
+
+  let yubaCur = 0;
+  const yubaImg = document.getElementById("yuba-img");
+  const yubaCounter = document.getElementById("yuba-counter");
+  const yubaThumbs = document.getElementById("yuba-thumbs");
+
+  yubaSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => yubaGoTo(i);
+    yubaThumbs.appendChild(t);
+  });
+
+  function yubaGoTo(n) {
+    yubaCur = (n + yubaSlides.length) % yubaSlides.length;
+    yubaImg.src = yubaSlides[yubaCur];
+    yubaCounter.textContent = (yubaCur + 1) + " of " + yubaSlides.length;
+    yubaThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === yubaCur));
+    yubaThumbs.querySelectorAll("img")[yubaCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function yubaSlide(d) { yubaGoTo(yubaCur + d); }
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft")  yubaSlide(-1);
+    if (e.key === "ArrowRight") yubaSlide(1);
+  });
+  yubaGoTo(0);
+</script>
+
+<!-- ── Page nav ── -->
+<div class="page-nav">
+  <a href="map.html">← The Town</a>
+  <a href="townhall.html" class="next">Town Hall →</a>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <strong>Gold Rush Field Trip 2026</strong><br>
+  Salmon Creek School · 4th Grade · Malakoff Diggins State Historic Park, CA
+</footer>
+
+</body>
+</html>

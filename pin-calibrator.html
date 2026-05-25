@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pin Calibrator</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #1a1a1a; font-family: monospace; color: #eee; padding: 1rem; }
+    h2 { margin-bottom: 0.5rem; color: #f5c842; font-size: 1rem; }
+    p  { font-size: 0.8rem; color: #aaa; margin-bottom: 1rem; }
+
+    .map-wrapper {
+      position: relative;
+      display: inline-block;
+      border: 2px solid #f5c842;
+      cursor: crosshair;
+    }
+
+    .map-wrapper img {
+      display: block;
+      width: 900px;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Draggable pin */
+    .pin {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      cursor: grab;
+      user-select: none;
+      z-index: 20;
+      text-align: center;
+    }
+
+    .pin:active { cursor: grabbing; }
+
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      background: #e74c3c;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      margin: 0 auto;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.6);
+    }
+
+    .pin-name {
+      margin-top: 3px;
+      font-size: 10px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    /* Output panel */
+    .output {
+      margin-top: 1rem;
+      max-width: 900px;
+    }
+
+    .positions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .pos-row {
+      background: #2a2a2a;
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .pos-name { color: #f5c842; }
+    .pos-val  { color: #7fdbca; }
+
+    textarea {
+      width: 100%;
+      height: 220px;
+      background: #111;
+      color: #7fdbca;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 0.75rem;
+      font-family: monospace;
+      font-size: 0.8rem;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1.2rem;
+      background: #f5c842;
+      color: #1a1a1a;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    button:hover { background: #e0b030; }
+
+    .hint {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Pin Calibrator — drag each pin onto its building, then copy the CSS</h2>
+<p>Drag the red pins to the correct buildings. Positions update live below.</p>
+
+<div class="map-wrapper" id="mapWrapper">
+  <img src="images/map/cartoon-town-labeled.jpg" alt="Map" id="mapImg" draggable="false">
+
+  <div class="pin" id="pin-saloon"     data-name="saloon"     style="left:75%;top:22%">
+    <div class="pin-dot"></div><div class="pin-name">Saloon</div>
+  </div>
+  <div class="pin" id="pin-store"      data-name="store"      style="left:51%;top:55%">
+    <div class="pin-dot"></div><div class="pin-name">General Store</div>
+  </div>
+  <div class="pin" id="pin-pharmacy"   data-name="pharmacy"   style="left:51%;top:20%">
+    <div class="pin-dot"></div><div class="pin-name">Pharmacy</div>
+  </div>
+  <div class="pin" id="pin-blacksmith" data-name="blacksmith" style="left:35%;top:44%">
+    <div class="pin-dot"></div><div class="pin-name">Blacksmith</div>
+  </div>
+  <div class="pin" id="pin-cemetery"   data-name="cemetery"   style="left:17%;top:32%">
+    <div class="pin-dot"></div><div class="pin-name">Cemetery</div>
+  </div>
+  <div class="pin" id="pin-creek"      data-name="creek"      style="left:22%;top:72%">
+    <div class="pin-dot"></div><div class="pin-name">Panning Area</div>
+  </div>
+  <div class="pin" id="pin-museum"     data-name="museum"     style="left:64%;top:43%">
+    <div class="pin-dot"></div><div class="pin-name">Museum</div>
+  </div>
+</div>
+
+<div class="output">
+  <div class="positions-grid" id="posGrid"></div>
+  <textarea id="cssOutput" readonly></textarea>
+  <br>
+  <button onclick="copyCss()">Copy CSS to Clipboard</button>
+  <p class="hint">Then open map.html, find the "Pin positions" block (around line 107), and replace those 7 lines with what you copied.</p>
+</div>
+
+<script>
+  const wrapper = document.getElementById('mapWrapper');
+  const pins = document.querySelectorAll('.pin');
+  const positions = {};
+
+  // Initialise positions from inline style
+  pins.forEach(pin => {
+    const name = pin.dataset.name;
+    positions[name] = {
+      left: parseFloat(pin.style.left),
+      top:  parseFloat(pin.style.top)
+    };
+  });
+
+  // Drag logic
+  let dragging = null;
+  let startX, startY, startLeft, startTop;
+
+  pins.forEach(pin => {
+    pin.addEventListener('mousedown', e => {
+      e.preventDefault();
+      dragging = pin;
+      const rect = wrapper.getBoundingClientRect();
+      startX    = e.clientX;
+      startY    = e.clientY;
+      startLeft = parseFloat(pin.style.left);
+      startTop  = parseFloat(pin.style.top);
+    });
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const rect   = wrapper.getBoundingClientRect();
+    const dx     = ((e.clientX - startX) / rect.width)  * 100;
+    const dy     = ((e.clientY - startY) / rect.height) * 100;
+    const newL   = Math.max(0, Math.min(100, startLeft + dx));
+    const newT   = Math.max(0, Math.min(100, startTop  + dy));
+    dragging.style.left = newL + '%';
+    dragging.style.top  = newT + '%';
+    positions[dragging.dataset.name] = { left: newL, top: newT };
+    renderOutput();
+  });
+
+  document.addEventListener('mouseup', () => { dragging = null; });
+
+  function renderOutput() {
+    // Live grid
+    const grid = document.getElementById('posGrid');
+    grid.innerHTML = Object.entries(positions).map(([name, p]) =>
+      `<div class="pos-row">
+        <span class="pos-name">.pin-${name}</span>
+        <span class="pos-val">left: ${p.left.toFixed(1)}%  top: ${p.top.toFixed(1)}%</span>
+      </div>`
+    ).join('');
+
+    // CSS block
+    const lines = Object.entries(positions).map(([name, p]) => {
+      const pad = ' '.repeat(Math.max(1, 14 - name.length));
+      return `    .pin-${name}${pad}{ left: ${p.left.toFixed(1)}%; top: ${p.top.toFixed(1)}%; }`;
+    });
+    document.getElementById('cssOutput').value = lines.join('\n');
+  }
+
+  function copyCss() {
+    const ta = document.getElementById('cssOutput');
+    ta.select();
+    document.execCommand('copy');
+    const btn = document.querySelector('button');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy CSS to Clipboard', 1500);
+  }
+
+  // Initial render
+  renderOutput();
+</script>
+</body>
+</html>

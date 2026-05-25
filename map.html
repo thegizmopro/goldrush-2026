@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Town — North Bloomfield</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f5efe0;
+      font-family: Georgia, serif;
+      color: #3a2a1a;
+    }
+
+    /* Nav */
+    nav {
+      background: #5c3a1e;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .nav-logo { color: #c8a96e; font-size: 1rem; font-weight: bold; padding: 0.75rem 0; letter-spacing: 0.04em; text-decoration: none; }
+    .nav-links { display: flex; gap: 0; list-style: none; flex-wrap: wrap; }
+    .nav-links a { display: block; color: #e8dcc8; text-decoration: none; padding: 0.75rem 1rem; font-size: 0.85rem; letter-spacing: 0.03em; transition: color 0.15s, background 0.15s; }
+    .nav-links a:hover, .nav-links a.active { color: #c8a96e; background: rgba(255,255,255,0.07); }
+
+    h1 {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 1.8rem;
+      letter-spacing: 0.05em;
+      color: #5c3a1e;
+      border-bottom: 2px solid #c8a96e;
+    }
+
+    .map-wrapper {
+      position: relative;
+      display: inline-block;
+      margin: 2rem auto;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .map-wrapper img {
+      display: block;
+      /* Scale up the map so hotspots are easier to click.
+         Adjust max-width to taste once you have a higher-res version. */
+      width: 800px;
+      height: auto;
+      border: 3px solid #c8a96e;
+      border-radius: 4px;
+    }
+
+    /* Each hotspot: a small pulsing pin positioned over a building */
+    .pin {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      background: #c0392b;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      margin: 3px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      transition: transform 0.15s;
+    }
+
+    .pin:hover .pin-dot {
+      transform: scale(1.4);
+      background: #e67e22;
+    }
+
+    /* Tooltip that appears on hover */
+    .pin-label {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #3a2a1a;
+      color: #f5efe0;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      padding: 4px 8px;
+      border-radius: 3px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .pin-label::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #3a2a1a;
+    }
+
+    .pin:hover .pin-label {
+      opacity: 1;
+    }
+
+    /* ── Pin positions ──────────────────────────────────────────────────────
+       Coordinates calibrated to cartoon-town-labeled.jpg.
+       Each pin is centered on its building's roofline / icon.
+       ──────────────────────────────────────────────────────────────────── */
+
+    .pin-saloon        { left: 74.6%; top: 25.9%; }
+    .pin-store         { left: 57.6%; top: 72.0%; }
+    .pin-pharmacy      { left: 57.2%; top: 23.2%; }
+    .pin-blacksmith    { left: 33.8%; top: 50.4%; }
+    .pin-cemetery      { left: 35.6%; top: 29.0%; }
+    .pin-creek         { left: 21.0%; top: 74.8%; }
+    .pin-museum        { left: 64.0%; top: 43.0%; }
+
+    /* Legend */
+    .legend {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      padding: 1rem 1.5rem;
+      background: #fff8ec;
+      border: 1px solid #c8a96e;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #3a2a1a;
+    }
+
+    .legend-item:hover { color: #c0392b; }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      background: #c0392b;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Location detail panels (shown below map, one at a time) */
+    .location-panels {
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+
+    .panel {
+      display: none;
+      background: #fff8ec;
+      border: 1px solid #c8a96e;
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .panel.active { display: block; }
+
+    .panel h2 {
+      font-size: 1.4rem;
+      color: #5c3a1e;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #c8a96e;
+      padding-bottom: 0.5rem;
+    }
+
+    .panel p { line-height: 1.7; margin-bottom: 0.75rem; }
+    .panel ul { padding-left: 1.4rem; line-height: 1.8; margin-bottom: 0.75rem; }
+
+    .panel-photos {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .panel-photos img {
+      width: 180px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 3px;
+      border: 1px solid #c8a96e;
+    }
+
+    .photo-placeholder {
+      width: 180px;
+      height: 130px;
+      background: #e8dcc8;
+      border-radius: 3px;
+      border: 1px dashed #c8a96e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #999;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .close-panel {
+      float: right;
+      background: none;
+      border: 1px solid #c8a96e;
+      border-radius: 3px;
+      padding: 2px 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: #5c3a1e;
+    }
+
+    .close-panel:hover { background: #c8a96e; color: #fff; }
+
+    /* Panel videos */
+    .panel-videos {
+      margin-top: 1.25rem;
+    }
+    .panel-videos h3 {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #5c3a1e;
+      margin-bottom: 0.75rem;
+    }
+    .video-group {
+      margin-bottom: 1.25rem;
+    }
+    .video-group-label {
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #5c3a1e;
+      margin-bottom: 0.4rem;
+    }
+    .video-row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .video-row video {
+      flex: 1 1 240px;
+      max-width: 100%;
+      border-radius: 3px;
+      border: 1px solid #c8a96e;
+      background: #000;
+    }
+    .video-row.single video { max-width: 480px; }
+
+    /* Panel slideshow */
+    .panel-slideshow {
+      margin-top: 1.5rem;
+      background: #1a1008;
+      border-radius: 4px;
+      padding: 1rem;
+    }
+    .panel-slideshow-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #c8a96e;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .panel-slideshow-counter { opacity: 0.7; font-weight: normal; }
+    .panel-slideshow-stage {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .panel-slideshow-stage img {
+      flex: 1;
+      max-height: 420px;
+      width: 100%;
+      object-fit: contain;
+      border-radius: 3px;
+      border: 1px solid #c8a96e;
+      background: #000;
+      display: block;
+    }
+    .panel-slide-btn {
+      background: rgba(200,169,110,0.15);
+      border: 1px solid #c8a96e;
+      color: #c8a96e;
+      font-size: 1.2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .panel-slide-btn:hover { background: rgba(200,169,110,0.35); }
+    .panel-slideshow-thumbs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 0.75rem;
+    }
+    .panel-slideshow-thumbs img {
+      width: 58px;
+      height: 44px;
+      object-fit: cover;
+      border-radius: 2px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: opacity 0.15s, border-color 0.15s;
+    }
+    .panel-slideshow-thumbs img:hover { opacity: 1; }
+    .panel-slideshow-thumbs img.active { border-color: #c8a96e; opacity: 1; }
+
+    /* Note banner */
+    .dev-note {
+      max-width: 800px;
+      margin: 1rem auto 0;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      color: #856404;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">⛏ Gold Rush 2026</a>
+  <ul class="nav-links">
+    <li><a href="camp.html">Arrival &amp; Camp</a></li>
+    <li><a href="map.html" class="active">The Town</a></li>
+    <li><a href="diggings.html">The Diggings</a></li>
+    <li><a href="townhall.html">Town Hall</a></li>
+    <li><a href="characters.html">Characters</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<h1>North Bloomfield — Gold Rush Town</h1>
+
+<div class="dev-note">
+  <strong>Dev note:</strong> Pins calibrated to cartoon-town-labeled.jpg — 7 labeled locations.
+  Fine-tune <code>left%</code> / <code>top%</code> values in CSS if any pin needs a nudge.
+  Replace photo placeholders with real images once photos are sorted into subfolders.
+</div>
+
+<div class="map-wrapper">
+  <img src="images/map/cartoon-town-labeled.jpg" alt="North Bloomfield Historical Town Map" id="map-img">
+
+  <!-- ── Clickable pins ── -->
+  <div class="pin pin-cemetery"   onclick="showPanel('cemetery')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">Cemetery</div>
+  </div>
+
+  <div class="pin pin-pharmacy"   onclick="showPanel('pharmacy')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">Pharmacy</div>
+  </div>
+
+  <div class="pin pin-saloon"     onclick="showPanel('saloon')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">Kings Saloon</div>
+  </div>
+
+  <div class="pin pin-blacksmith" onclick="showPanel('blacksmith')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">Blacksmith Shop</div>
+  </div>
+
+  <div class="pin pin-museum"     onclick="showPanel('museum')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">Museum</div>
+  </div>
+
+  <div class="pin pin-store"      onclick="showPanel('store')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">General Store</div>
+  </div>
+
+  <div class="pin pin-creek"      onclick="showPanel('creek')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">Panning Area</div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <a class="legend-item" onclick="showPanel('cemetery')"><span class="legend-dot"></span> Cemetery</a>
+  <a class="legend-item" onclick="showPanel('pharmacy')"><span class="legend-dot"></span> Pharmacy</a>
+  <a class="legend-item" onclick="showPanel('saloon')"><span class="legend-dot"></span> Kings Saloon</a>
+  <a class="legend-item" onclick="showPanel('blacksmith')"><span class="legend-dot"></span> Blacksmith Shop</a>
+  <a class="legend-item" onclick="showPanel('museum')"><span class="legend-dot"></span> Museum</a>
+  <a class="legend-item" onclick="showPanel('store')"><span class="legend-dot"></span> General Store</a>
+  <a class="legend-item" onclick="showPanel('creek')"><span class="legend-dot"></span> Panning Area</a>
+</div>
+
+<!-- ── Location panels ── -->
+<div class="location-panels">
+
+  <div class="panel" id="panel-saloon">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>Kings Saloon</h2>
+    <p>One of seven (maybe nine) saloons in North Bloomfield at its peak. Originally built in 1860 as an express office; Jack King remodeled it as a saloon between 1873–1875. The building you see today was reconstructed in 1974 from historic photographs.</p>
+    <p>Beer cost 5 cents a glass — kept in the basement with no refrigeration. Hard liquor had to be imported from Sacramento or San Francisco. A half-pint of whiskey might cost $2.00 — nearly a miner's daily wage.</p>
+    <p>Women were scarce in town. Saloon owners paid women $20–$40 a day just to be present and talk to miners. <strong>Lola Montez</strong> — who had ruled Bavaria and once plotted to make California her own kingdom — held court here.</p>
+    <p>The kids witnessed a staged brawl between pro-mining miners and outraged farmers from the Central Valley — a preview of the Town Hall debate to come.</p>
+    <div class="panel-photos">
+      <img src="images/town/saloon/20260514_111324_result.webp" alt="Saloon">
+      <img src="images/town/saloon/IMG_0852_result_result.webp" alt="Saloon">
+    </div>
+
+    <div class="panel-videos">
+      <h3>Videos</h3>
+
+      <div class="video-group">
+        <div class="video-group-label">The Brawl</div>
+        <div class="video-row">
+          <video controls><source src="images/town/saloon/Saloon-Fight.mp4" type="video/mp4"></video>
+          <video controls><source src="images/town/saloon/Saloon-Fight-2.mp4" type="video/mp4"></video>
+        </div>
+      </div>
+
+      <div class="video-group">
+        <div class="video-group-label">The Bartender</div>
+        <div class="video-row">
+          <video controls><source src="images/town/saloon/Saloon-Bartender.mp4" type="video/mp4"></video>
+        </div>
+      </div>
+
+      <div class="video-group">
+        <div class="video-group-label">Lola's Poker Table</div>
+        <div class="video-row">
+          <video controls><source src="images/town/saloon/saloon-poker.mp4" type="video/mp4"></video>
+        </div>
+      </div>
+
+      <div class="video-group">
+        <div class="video-group-label">The Saloon</div>
+        <div class="video-row single">
+          <video controls><source src="images/town/saloon/Saloon.mp4" type="video/mp4"></video>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saloon photo slideshow -->
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="saloon-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="saloonSlide(-1)">&#8592;</button>
+        <img id="saloon-img" src="" alt="Saloon photo">
+        <button class="panel-slide-btn" onclick="saloonSlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="saloon-thumbs"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-store">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>McKillican-Mobley General Store</h2>
+    <p>The main room dates to 1856. Gold was the currency — every counter had scales for weighing it. The store sold Levis (Levi Strauss made the first pair for Gold Rush miners), kerosene, ammunition, mining supplies, canned meat, medications, and soap. Vegetables were NOT sold here — those came from the Chinese gardens down the road.</p>
+    <p>In the basement: two large barrels of whiskey, free to any miner who wanted a drink after a long day. Ladies met at the post office window inside to exchange gossip. The daily arrival of the stage was the most exciting moment of the day.</p>
+    <p>The store officially closed in 1941, with Noni Landsburg as the last postmaster.</p>
+    <div class="panel-photos">
+      <img src="images/town/general-store/IMG_0877_result_result.webp" alt="General Store">
+      <img src="images/town/general-store/IMG_0882_result_result.webp" alt="General Store">
+    </div>
+
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="store-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="storeSlide(-1)">&#8592;</button>
+        <img id="store-img" src="" alt="General Store photo">
+        <button class="panel-slide-btn" onclick="storeSlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="store-thumbs"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-pharmacy">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>Smith-Knotwell Drugstore</h2>
+    <p><strong>John Knotwell</strong> could fix sore muscles, stomach aches, coughs, and rashes. He was also a justice of the peace and county board supervisor. He married Nettie Smith, daughter of the store's founder, on July 20, 1881.</p>
+    <p>Many remedies of the time contained morphine — a powerful painkiller that didn't treat the illness; you just couldn't feel the pain anymore. Frontier medicine: effective, until it wasn't.</p>
+    <p>Knotwell died of pneumonia in 1901 at age 66. He is buried in the North Bloomfield Cemetery. The current building is a reconstruction completed between 1976–1984.</p>
+    <div class="panel-photos">
+      <img src="images/town/pharmacy/IMG_0868_result_result.webp" alt="Pharmacy">
+      <img src="images/town/pharmacy/IMG_0874_result_result.webp" alt="Pharmacy">
+    </div>
+
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="pharmacy-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="pharmacySlide(-1)">&#8592;</button>
+        <img id="pharmacy-img" src="" alt="Pharmacy photo">
+        <button class="panel-slide-btn" onclick="pharmacySlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="pharmacy-thumbs"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-blacksmith">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>Blacksmith Shop</h2>
+    <p>The blacksmith was the backbone of the mining operation. Without the smithy, everything stops: no monitors, no pipes, no repaired equipment. <strong>Rick the blacksmith</strong> showed the kids exactly how it worked — and then they got to work themselves.</p>
+    <p>Every student forged their own <strong>coat hook</strong> to take home. Hands in the fire, hammer on iron, something real to keep.</p>
+    <p>The Gold Rush blacksmith made and repaired hydraulic monitors (water cannons operating at 500 PSI), Penstock Pipes for the water system, horseshoes, pots, pans, and farm tools. A miner who couldn't pan gold could still strike it rich with a skilled trade.</p>
+    <div class="panel-photos">
+      <img src="images/town/blacksmith/IMG_0838_result_result.webp" alt="Blacksmith">
+      <img src="images/town/blacksmith/PXL_20260514_190028989_result.webp" alt="Blacksmith">
+      <img src="images/town/blacksmith/PXL_20260514_190353220_result.webp" alt="Blacksmith">
+    </div>
+
+    <div class="panel-videos">
+      <h3>Videos</h3>
+      <div class="video-group">
+        <div class="video-row single">
+          <video controls><source src="images/town/blacksmith/Blacksmithing.mp4" type="video/mp4"></video>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="blacksmith-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="blacksmithSlide(-1)">&#8592;</button>
+        <img id="blacksmith-img" src="" alt="Blacksmith photo">
+        <button class="panel-slide-btn" onclick="blacksmithSlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="blacksmith-thumbs"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-cemetery">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>North Bloomfield Cemetery</h2>
+    <p>Real people. Real stories. Some of the graves here tell more about Gold Rush life than any history book.</p>
+    <ul>
+      <li><strong>Willy Blood</strong> — Shot through the heart during a card game at age 22. His weathered wooden tombstone is still here.</li>
+      <li><strong>Michael Perfumo</strong> — Left for Marysville on January 10, 1858. Never arrived. His injured dog was found near the river. Then his hat, coat, and bloodied shoes near an old mine shaft. What happened? Nobody knows.</li>
+      <li><strong>Eddie Sherwood</strong> — Drowned in a rain barrel behind the family home. He was 2 years old.</li>
+      <li><strong>Cordelia, Elvena, and Florentina Gaus</strong> — Three children who died of TB carried by the family's milk cow.</li>
+      <li><strong>Julius Poquillion</strong> — Built the entire North Bloomfield Gravel Mining Company. Died by suicide in San Francisco at 45 in 1876.</li>
+      <li><strong>David Stokes</strong> — Invented the steerable hydraulic monitor. Born in Switzerland. Died at 39.</li>
+    </ul>
+    <div class="panel-photos">
+      <div class="photo-placeholder">Add photos from<br>cemetery/</div>
+      <div class="photo-placeholder">Add photos from<br>cemetery/</div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-creek">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>Gold Panning at the Creek</h2>
+    <p>The kids got in the water and panned for gold — the same way miners did it starting in 1848. A few motions, the pan tilts, the water runs off. The gold, heavier than everything else, stays at the bottom. "Color" — any trace of gold — is what every miner lived for.</p>
+    <p>The mining technology evolved fast because panning was slow:</p>
+    <ul>
+      <li><strong>Gold pan:</strong> ½ cubic yard per day</li>
+      <li><strong>Rocker box:</strong> 8× the volume of a pan</li>
+      <li><strong>Sluice / Long Tom:</strong> 16× the volume</li>
+      <li><strong>Hydraulic monitor:</strong> 50,000 tons of gravel per day — and the beginning of the environmental disaster</li>
+    </ul>
+    <div class="panel-photos">
+      <img src="images/creek/20260514_134307_result.webp" alt="Creek">
+      <img src="images/creek/IMG_0941_result_result.webp" alt="Creek">
+      <img src="images/creek/IMG_6970_result_result.webp" alt="Creek">
+    </div>
+
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="creek-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="creekSlide(-1)">&#8592;</button>
+        <img id="creek-img" src="" alt="Creek photo">
+        <button class="panel-slide-btn" onclick="creekSlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="creek-thumbs"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-diggings">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>The Diggings Overlook</h2>
+    <p>Stand at the overlook and try to understand the scale: the Malakoff pit is <strong>6,800 feet long, 3,800 feet wide, and 600 feet deep</strong>. Forty-one million cubic yards of earth and gravel were removed between 1866 and 1884 — all of it blasted away by water cannons firing at 500 PSI.</p>
+    <p>One part gold per 12 million parts of gravel. The company spent $3 million building the operation and recovered $3.5 million in gold — at $17 per ounce. The math barely worked. The environmental cost did not.</p>
+    <p>Hydraulic mining contributed roughly one quarter of California's total gold yield. And it permanently changed the landscape of the Sierra Nevada, the Central Valley, and the rivers between them.</p>
+    <div class="panel-photos">
+      <img src="images/diggings/IMG_0996_result_result.webp" alt="The Diggings">
+      <img src="images/diggings/IMG_1003_result_result.webp" alt="The Diggings">
+      <img src="images/diggings/PXL_20260515_182330468_result.webp" alt="The Diggings">
+    </div>
+  </div>
+
+  <div class="panel" id="panel-museum">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>Museum &amp; Visitor Center</h2>
+    <p>The museum holds the full story of hydraulic mining — exhibits, artifacts, and a film that puts the scale of the Malakoff operation into context. (The film is dated and biased toward the mining side — which makes it a useful artifact in itself.)</p>
+    <p>This is where <strong>Hamilton Smith</strong> — the engineer who designed the North Bloomfield drain tunnel — would hold court. The tunnel: 7,878 feet long, 300 feet deep, dug by 15 crews simultaneously from 8 shafts. Completed November 15, 1874. Still considered one of the engineering feats of its era.</p>
+    <div class="panel-photos">
+      <img src="images/town/museum/IMG_0834_result_result.webp" alt="Museum">
+      <img src="images/town/museum/IMG_0900_result_result.webp" alt="Museum">
+    </div>
+
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="museum-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="museumSlide(-1)">&#8592;</button>
+        <img id="museum-img" src="" alt="Museum photo">
+        <button class="panel-slide-btn" onclick="museumSlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="museum-thumbs"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showPanel(id) {
+    // Hide all panels
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    // Show selected
+    const panel = document.getElementById('panel-' + id);
+    if (panel) {
+      panel.classList.add('active');
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function closePanel() {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  }
+
+  // Saloon slideshow
+  const saloonSlides = [
+    "20260514_111324_result.webp","20260514_111542_result.webp","20260514_111546_result.webp",
+    "20260514_111557_result.webp","20260514_111607_result.webp","20260514_111608_result.webp",
+    "20260514_111623_result.webp","20260514_122718_result.webp","20260514_122817_result.webp",
+    "20260514_123503_result.webp","20260514_123611_result.webp","20260514_123613_result.webp",
+    "IMG_0846_result_result.webp","IMG_0848_result_result.webp","IMG_0852_result_result.webp",
+    "IMG_0853_result_result.webp","IMG_0854_result_result.webp","IMG_0858_result_result.webp",
+    "IMG_0860_result_result.webp","IMG_0862_result_result.webp","IMG_0892_result_result.webp",
+    "IMG_3315_result_result.webp","IMG_3316_result_result.webp","IMG_3317_result_result.webp",
+    "IMG_3318_result_result.webp","IMG_3418_result.webp","IMG_3424_result.webp",
+    "IMG_3430_result.webp","IMG_3431_result.webp","IMG_3432_result.webp",
+    "IMG_9601_result_result.webp","IMG_9618_result_result.webp","IMG_9619_result_result.webp",
+    "PXL_20260514_180707662_result.webp","PXL_20260514_180714499_result.webp",
+    "PXL_20260514_180716061.MP_result.webp"
+  ].map(f => "images/town/saloon/" + f);
+
+  let saloonCur = 0;
+  const saloonImg = document.getElementById("saloon-img");
+  const saloonCounter = document.getElementById("saloon-counter");
+  const saloonThumbs = document.getElementById("saloon-thumbs");
+
+  saloonSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => saloonGoTo(i);
+    saloonThumbs.appendChild(t);
+  });
+
+  function saloonGoTo(n) {
+    saloonCur = (n + saloonSlides.length) % saloonSlides.length;
+    saloonImg.src = saloonSlides[saloonCur];
+    saloonCounter.textContent = (saloonCur + 1) + " of " + saloonSlides.length;
+    saloonThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === saloonCur));
+    saloonThumbs.querySelectorAll("img")[saloonCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function saloonSlide(d) { saloonGoTo(saloonCur + d); }
+  saloonGoTo(0);
+
+  // Blacksmith slideshow
+  const blacksmithSlides = [
+    "IMG_0838_result_result.webp","IMG_0840_result_result.webp","IMG_0935_result_result.webp",
+    "IMG_3302_result_result.webp","IMG_3303_result_result.webp","IMG_3305_result_result.webp",
+    "IMG_3306_result_result.webp","IMG_3307_result_result.webp","IMG_3421_result.webp",
+    "IMG_9638_result_result.webp","PXL_20260514_184126180_result.webp","PXL_20260514_184128618_result.webp",
+    "PXL_20260514_184334992_result.webp","PXL_20260514_184657263_result.webp","PXL_20260514_190028989_result.webp",
+    "PXL_20260514_190033745_result.webp","PXL_20260514_190216255_result.webp","PXL_20260514_190301841_result.webp",
+    "PXL_20260514_190353220_result.webp","PXL_20260514_190651948_result.webp","PXL_20260514_190825224_result.webp",
+    "PXL_20260514_191300913_result.webp","PXL_20260514_191849708_result.webp","PXL_20260514_192004374_result.webp",
+    "PXL_20260514_194803965_result.webp","PXL_20260514_194912749.MP_result.webp"
+  ].map(f => "images/town/blacksmith/" + f);
+
+  let blacksmithCur = 0;
+  const blacksmithImg = document.getElementById("blacksmith-img");
+  const blacksmithCounter = document.getElementById("blacksmith-counter");
+  const blacksmithThumbs = document.getElementById("blacksmith-thumbs");
+
+  blacksmithSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => blacksmithGoTo(i);
+    blacksmithThumbs.appendChild(t);
+  });
+
+  function blacksmithGoTo(n) {
+    blacksmithCur = (n + blacksmithSlides.length) % blacksmithSlides.length;
+    blacksmithImg.src = blacksmithSlides[blacksmithCur];
+    blacksmithCounter.textContent = (blacksmithCur + 1) + " of " + blacksmithSlides.length;
+    blacksmithThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === blacksmithCur));
+    blacksmithThumbs.querySelectorAll("img")[blacksmithCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function blacksmithSlide(d) { blacksmithGoTo(blacksmithCur + d); }
+  blacksmithGoTo(0);
+
+  // Creek slideshow
+  const creekSlides = [
+    "20260514_134307_result.webp","20260514_134308_result.webp","20260514_134439_result.webp",
+    "20260514_134445_result.webp","20260514_134604_result.webp","20260514_135005_result.webp",
+    "IMG_0941_result_result.webp","IMG_0942_result_result.webp","IMG_0943_result_result.webp",
+    "IMG_0944_result_result.webp","IMG_0945_result_result.webp","IMG_0946_result_result.webp",
+    "IMG_0947_result_result.webp","IMG_0948_result_result.webp","IMG_0949_result_result.webp",
+    "IMG_0950_result.webp","IMG_0951_result_result.webp","IMG_0952_result_result.webp",
+    "IMG_0953_result_result.webp","IMG_0954_result_result.webp","IMG_0955_result_result.webp",
+    "IMG_3319_result_result.webp","IMG_3320_result_result.webp","IMG_3321_result_result.webp",
+    "IMG_3322_result_result.webp","IMG_6970_result_result.webp","IMG_6971_result_result.webp",
+    "IMG_6972_result_result.webp","IMG_6973_result_result.webp","IMG_6974_result_result.webp",
+    "IMG_6975_result_result.webp","IMG_6976_result_result.webp","IMG_6977_result_result.webp"
+  ].map(f => "images/creek/" + f);
+
+  let creekCur = 0;
+  const creekImg = document.getElementById("creek-img");
+  const creekCounter = document.getElementById("creek-counter");
+  const creekThumbs = document.getElementById("creek-thumbs");
+
+  creekSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => creekGoTo(i);
+    creekThumbs.appendChild(t);
+  });
+
+  function creekGoTo(n) {
+    creekCur = (n + creekSlides.length) % creekSlides.length;
+    creekImg.src = creekSlides[creekCur];
+    creekCounter.textContent = (creekCur + 1) + " of " + creekSlides.length;
+    creekThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === creekCur));
+    creekThumbs.querySelectorAll("img")[creekCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function creekSlide(d) { creekGoTo(creekCur + d); }
+  creekGoTo(0);
+
+  // General Store slideshow
+  const storeSlides = [
+    "IMG_0877_result_result.webp","IMG_0878_result_result.webp","IMG_0879_result_result.webp",
+    "IMG_0880_result_result.webp","IMG_0881_result_result.webp","IMG_0882_result_result.webp",
+    "IMG_0886_result_result.webp","IMG_0887_result_result.webp","IMG_0888_result_result.webp",
+    "IMG_0890_result_result.webp","IMG_0891_result_result.webp"
+  ].map(f => "images/town/general-store/" + f);
+
+  let storeCur = 0;
+  const storeImg = document.getElementById("store-img");
+  const storeCounter = document.getElementById("store-counter");
+  const storeThumbs = document.getElementById("store-thumbs");
+
+  storeSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => storeGoTo(i);
+    storeThumbs.appendChild(t);
+  });
+
+  function storeGoTo(n) {
+    storeCur = (n + storeSlides.length) % storeSlides.length;
+    storeImg.src = storeSlides[storeCur];
+    storeCounter.textContent = (storeCur + 1) + " of " + storeSlides.length;
+    storeThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === storeCur));
+    storeThumbs.querySelectorAll("img")[storeCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function storeSlide(d) { storeGoTo(storeCur + d); }
+  storeGoTo(0);
+
+  // Pharmacy slideshow
+  const pharmacySlides = [
+    "20260514_104040_result.webp","IMG_0868_result_result.webp",
+    "IMG_0874_result_result.webp","IMG_3427_result.webp"
+  ].map(f => "images/town/pharmacy/" + f);
+
+  let pharmacyCur = 0;
+  const pharmacyImg = document.getElementById("pharmacy-img");
+  const pharmacyCounter = document.getElementById("pharmacy-counter");
+  const pharmacyThumbs = document.getElementById("pharmacy-thumbs");
+
+  pharmacySlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => pharmacyGoTo(i);
+    pharmacyThumbs.appendChild(t);
+  });
+
+  function pharmacyGoTo(n) {
+    pharmacyCur = (n + pharmacySlides.length) % pharmacySlides.length;
+    pharmacyImg.src = pharmacySlides[pharmacyCur];
+    pharmacyCounter.textContent = (pharmacyCur + 1) + " of " + pharmacySlides.length;
+    pharmacyThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === pharmacyCur));
+    pharmacyThumbs.querySelectorAll("img")[pharmacyCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function pharmacySlide(d) { pharmacyGoTo(pharmacyCur + d); }
+  pharmacyGoTo(0);
+
+  // Museum slideshow
+  const museumSlides = [
+    "20260514_094757_result.webp","IMG_0834_result_result.webp","IMG_0842_result_result.webp",
+    "IMG_0844_result_result.webp","IMG_0869_result_result.webp","IMG_0870_result_result.webp",
+    "IMG_0871_result_result.webp","IMG_0900_result_result.webp","IMG_0901_result_result.webp",
+    "IMG_0902_result_result.webp","IMG_0903_result_result.webp","IMG_0904_result_result.webp",
+    "IMG_0907_result_result.webp","IMG_0908_result_result.webp","IMG_0909_result_result.webp",
+    "IMG_0912_result_result.webp","IMG_0914_result_result.webp","IMG_0918_result_result.webp",
+    "IMG_0926_result_result.webp","IMG_0927_result_result.webp","IMG_3298_result_result.webp",
+    "IMG_3299_result_result.webp","PXL_20260514_170352390.MP_result.webp","PXL_20260514_170400334_result.webp",
+    "PXL_20260514_170514104_result.webp","PXL_20260514_170738983_result.webp","PXL_20260514_171337865_result.webp",
+    "PXL_20260514_171741982_result.webp","PXL_20260514_172046094_result.webp"
+  ].map(f => "images/town/museum/" + f);
+
+  let museumCur = 0;
+  const museumImg = document.getElementById("museum-img");
+  const museumCounter = document.getElementById("museum-counter");
+  const museumThumbs = document.getElementById("museum-thumbs");
+
+  museumSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => museumGoTo(i);
+    museumThumbs.appendChild(t);
+  });
+
+  function museumGoTo(n) {
+    museumCur = (n + museumSlides.length) % museumSlides.length;
+    museumImg.src = museumSlides[museumCur];
+    museumCounter.textContent = (museumCur + 1) + " of " + museumSlides.length;
+    museumThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === museumCur));
+    museumThumbs.querySelectorAll("img")[museumCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function museumSlide(d) { museumGoTo(museumCur + d); }
+  museumGoTo(0);
+</script>
+
+</body>
+</html>

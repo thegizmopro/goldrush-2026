@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Town Hall — Gold Rush 2026</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:   #c8a96e;
+      --dark:   #3a2a1a;
+      --brown:  #5c3a1e;
+      --cream:  #f5efe0;
+      --warm:   #fff8ec;
+      --red:    #c0392b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      font-family: Georgia, serif;
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      background: var(--brown);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.75rem 0;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      display: block;
+      color: #e8dcc8;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 4rem 2rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '⚖';
+      position: absolute;
+      font-size: 18rem;
+      opacity: 0.04;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .page-header .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--cream);
+      border: none;
+      padding: 0;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .page-header p {
+      color: #d4c4a8;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Section divider ──────────────────────────────────────── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 900px;
+      margin: 3.5rem auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .section-divider h2 {
+      font-size: 1.4rem;
+      color: var(--brown);
+      white-space: nowrap;
+    }
+
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    /* ── Prose ────────────────────────────────────────────────── */
+    .prose {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .prose p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .prose p strong { color: var(--brown); }
+
+    /* ── Setup section ────────────────────────────────────────── */
+    .setup {
+      background: var(--warm);
+      border-top: 3px solid var(--gold);
+      border-bottom: 3px solid var(--gold);
+      padding: 3rem 2rem;
+      margin: 2.5rem 0;
+    }
+
+    .setup-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 640px) {
+      .setup-inner { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .setup h2 {
+      font-size: 1.3rem;
+      color: var(--brown);
+      margin-bottom: 1rem;
+    }
+
+    .setup p {
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .setup ul {
+      padding-left: 1.4rem;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    /* ── Interest groups ──────────────────────────────────────── */
+    .groups-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .group-card {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--gold);
+    }
+
+    .group-header {
+      padding: 1rem 1.25rem 0.75rem;
+      color: var(--cream);
+    }
+
+    .group-header h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .group-header .role {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      letter-spacing: 0.05em;
+    }
+
+    .group-body {
+      background: var(--warm);
+      padding: 1rem 1.25rem;
+    }
+
+    .group-body p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      margin-bottom: 0.5rem;
+      color: #4a3020;
+    }
+
+    .group-body .stake {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--red);
+    }
+
+    /* Group accent colors */
+    .group-miners    .group-header { background: #4a3820; }
+    .group-farmers   .group-header { background: #3a5020; }
+    .group-fishers   .group-header { background: #1a3a50; }
+    .group-investors .group-header { background: #2a2050; }
+    .group-merchants .group-header { background: #502020; }
+
+    /* ── Voices section ───────────────────────────────────────── */
+    .voices {
+      background: var(--dark);
+      padding: 4rem 2rem;
+      margin: 3rem 0;
+    }
+
+    .voices-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .voices h2 {
+      font-size: 1.4rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .voices .sub {
+      color: #a09080;
+      font-size: 0.85rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .voice-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .voice-card .speaker {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .voice-card blockquote {
+      font-style: italic;
+      color: #d4c4a8;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .voice-card .attribution {
+      font-size: 0.75rem;
+      color: #7a6a5a;
+      margin-top: 0.6rem;
+      font-style: normal;
+    }
+
+    /* ── The empty chair ──────────────────────────────────────── */
+    .empty-chair {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .empty-chair-inner {
+      background: #2a1a0a;
+      border-left: 5px solid var(--red);
+      border-radius: 0 6px 6px 0;
+      padding: 2rem;
+      color: var(--cream);
+    }
+
+    .empty-chair h3 {
+      font-size: 1.1rem;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+
+    .empty-chair p {
+      font-size: 0.9rem;
+      color: #d4c4a8;
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+
+    /* ── The ruling ───────────────────────────────────────────── */
+    .ruling {
+      background: var(--brown);
+      padding: 4rem 2rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+
+    .ruling-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .ruling .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .ruling blockquote {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .ruling .attribution {
+      font-size: 0.8rem;
+      color: #c8b090;
+      letter-spacing: 0.08em;
+    }
+
+    .ruling-impact {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    @media (max-width: 560px) {
+      .ruling-impact { grid-template-columns: 1fr; }
+    }
+
+    .impact-stat {
+      color: var(--cream);
+    }
+
+    .impact-stat .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .impact-stat p {
+      font-size: 0.8rem;
+      color: #c8b090;
+      line-height: 1.4;
+    }
+
+    /* ── Aftermath ────────────────────────────────────────────── */
+    .aftermath {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .aftermath-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .aftermath-grid { grid-template-columns: 1fr; }
+    }
+
+    .aftermath-block {
+      padding: 1.5rem;
+      border-radius: 6px;
+      border: 1px solid var(--gold);
+      background: var(--warm);
+    }
+
+    .aftermath-block h4 {
+      font-size: 0.95rem;
+      color: var(--brown);
+      margin-bottom: 0.6rem;
+    }
+
+    .aftermath-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+    /* ── Photo strip ──────────────────────────────────────────── */
+    .photo-strip {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .photo-strip img {
+      height: 200px;
+      flex: 1 1 220px;
+      object-fit: contain;
+      background: #1a1008;
+      border-radius: 4px;
+      border: 2px solid var(--gold);
+    }
+
+    .photo-placeholder {
+      height: 200px;
+      flex: 1 1 220px;
+      background: #e8dcc8;
+      border-radius: 4px;
+      border: 2px dashed var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #a09070;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* ── Debrief ──────────────────────────────────────────────── */
+    .debrief {
+      max-width: 720px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      border-left: 4px solid var(--gold);
+      padding-left: 2rem;
+    }
+
+    .debrief h2 {
+      font-size: 1.2rem;
+      color: var(--brown);
+      margin-bottom: 0.75rem;
+    }
+
+    .debrief p {
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* ── Lightbox ────────────────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 94vw;
+      max-height: 94vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+      cursor: default;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      color: #fff;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0.7;
+      background: none;
+      border: none;
+    }
+    .lightbox-close:hover { opacity: 1; }
+    .photo-strip img { cursor: zoom-in; }
+
+    /* ── Video testimony ─────────────────────────────────────────── */
+    .video-testimony {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .testimony-group {}
+
+    .testimony-label {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 4px;
+      display: inline-block;
+      color: var(--cream);
+      letter-spacing: 0.03em;
+    }
+
+    .testimony-label.miners-label    { background: #4a3820; }
+    .testimony-label.farmers-label   { background: #3a5020; }
+    .testimony-label.fishers-label   { background: #1a3a50; }
+    .testimony-label.investors-label { background: #2a2050; }
+    .testimony-label.merchants-label { background: #502020; }
+    .testimony-label.chair-label     { background: #5a1a1a; }
+
+    .testimony-videos {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .testimony-videos.single { grid-template-columns: 1fr; max-width: 640px; }
+    .testimony-videos.multi  { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+    .testimony-videos video {
+      width: 100%;
+      border-radius: 4px;
+      border: 2px solid var(--gold);
+      background: #000;
+      display: block;
+    }
+
+    /* ── Page nav ─────────────────────────────────────────────── */
+    .page-nav {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .page-nav a {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      border: 2px solid var(--brown);
+      border-radius: 4px;
+      color: var(--brown);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .page-nav a:hover { background: var(--brown); color: var(--cream); }
+
+    .page-nav .next {
+      background: var(--brown);
+      color: var(--cream);
+    }
+
+    .page-nav .next:hover {
+      background: var(--dark);
+      border-color: var(--dark);
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: #a09080;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    footer strong { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <a class="nav-logo" href="index.html">⛏ Gold Rush 2026</a>
+  <ul class="nav-links">
+    <li><a href="camp.html">Arrival &amp; Camp</a></li>
+    <li><a href="map.html">The Town</a></li>
+    <li><a href="diggings.html">The Diggings</a></li>
+    <li><a href="townhall.html" class="active">Town Hall</a></li>
+    <li><a href="characters.html">Characters</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- ── Page header ── -->
+<header class="page-header">
+  <p class="eyebrow">Act III · Thursday Evening, May 14</p>
+  <h1>The Town Hall</h1>
+  <p>Judge Sawyer is coming to town. Every group has one evening to make their case. The ruling is real. The consequences were permanent. And someone at the table will be told there is no seat for them.</p>
+</header>
+
+<!-- ── Setup ── -->
+<section class="setup">
+  <div class="setup-inner">
+    <div>
+      <h2>How it worked</h2>
+      <p>After two days of living as miners, merchants, saloon-goers, and gold panners, the kids changed into costumes and became something more: <strong>witnesses at a real historical hearing</strong>.</p>
+      <p>Each student was assigned to one of five interest groups. With a parent coach helping shape — not take over — their argument, each group prepared an opening statement, listened to the others, and came back with a rebuttal.</p>
+      <p>At the front of the room: Judge Lorenzo Sawyer. Behind him, 141 years of consequence.</p>
+    </div>
+    <div>
+      <h2>The roles</h2>
+      <ul>
+        <li>Interest group coaches (one parent per group)</li>
+        <li>Judge Sawyer — presiding</li>
+        <li>A bailiff — keeping order (parents were sometimes the worst offenders)</li>
+        <li>A state engineer — testifying to the wonders of hydraulic mining</li>
+        <li>Newspaper reporters — roving, taking notes</li>
+        <li>Hecklers — because this was 1884, not a library</li>
+        <li>A character without a seat — told to leave</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+  <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
+<div class="photo-strip">
+  <img src="images/town-hall/20260514_181908_result.webp" alt="Town Hall" onclick="openLightbox(this)">
+  <img src="images/town-hall/20260514_183959_result.webp" alt="Town Hall" onclick="openLightbox(this)">
+  <img src="images/town-hall/IMG_0960_result_result.webp" alt="Town Hall" onclick="openLightbox(this)">
+  <img src="images/town-hall/IMG_0970_result_result.webp" alt="Town Hall" onclick="openLightbox(this)">
+</div>
+
+<script>
+  function openLightbox(el) {
+    document.getElementById("lightbox-img").src = el.src;
+    document.getElementById("lightbox").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeLightbox() {
+    document.getElementById("lightbox").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+</script>
+
+
+<!-- ── Interest groups ── -->
+<div class="section-divider">
+  <h2>The Five Groups</h2>
+</div>
+
+<div class="groups-section">
+  <div class="groups-grid">
+
+    <div class="group-card group-miners">
+      <div class="group-header">
+        <h3>⛏ The Miners</h3>
+        <p class="role">Working for the North Bloomfield Mining Company</p>
+      </div>
+      <div class="group-body">
+        <p>Most miners in 1884 weren't panning a creek — they worked for the company that owned the monitors. The Malakoff operation employed hundreds. Shut it down and every one of them is out of work, the grubstakes come due, and the town goes with it.</p>
+        <p class="stake">Their argument: We were here first. We built this. Our rights to the water were established before the farmers arrived downstream.</p>
+      </div>
+    </div>
+
+    <div class="group-card group-farmers">
+      <div class="group-header">
+        <h3>🌾 The Farmers</h3>
+        <p class="role">Central Valley, downstream</p>
+      </div>
+      <div class="group-body">
+        <p>The tailings didn't stay in the mountains. They flowed into the rivers, filled the riverbeds, and buried the farms of the Central Valley under feet of grey slickens. Fields that had grown wheat and orchards were now under sand.</p>
+        <p class="stake">Their argument: We don't want their gold. We want our land back. You cannot have the right to bury your neighbor's farm.</p>
+      </div>
+    </div>
+
+    <div class="group-card group-fishers">
+      <div class="group-header">
+        <h3>🐟 The Fishers</h3>
+        <p class="role">Yuba, Feather, and American Rivers</p>
+      </div>
+      <div class="group-body">
+        <p>Salmon once ran thick in these rivers. By 1875, the spawning beds were buried under silt and the fish were gone — not depleted, extinct in these waters. The fishers watched it happen year by year and nobody listened.</p>
+        <p class="stake">Their argument: The rivers are dead. You can rebuild a farm. You cannot bring back a salmon run once it's gone.</p>
+      </div>
+    </div>
+
+    <div class="group-card group-investors">
+      <div class="group-header">
+        <h3>💰 The San Francisco Investors</h3>
+        <p class="role">Backers of the North Bloomfield Gravel Mining Company</p>
+      </div>
+      <div class="group-body">
+        <p>The monitors, the 40-mile ditch, the drain tunnel drilled through a mile of bedrock — all of it cost $3 million. The investors put up that money expecting a return. The gold is still in the ground. The operation just started paying off.</p>
+        <p class="stake">Their argument: This is private property and private investment. A ruling against us is confiscation without compensation.</p>
+      </div>
+    </div>
+
+    <div class="group-card group-merchants">
+      <div class="group-header">
+        <h3>🏪 The North Bloomfield Merchants</h3>
+        <p class="role">Townspeople, saloon keepers, storekeepers</p>
+      </div>
+      <div class="group-body">
+        <p>North Bloomfield exists because the mine exists. Every store, saloon, hotel, and smithy in town depends on the wages the company pays. If the monitors stop, the workers leave. If the workers leave, the town dies — and everyone in it.</p>
+        <p class="stake">Their argument: This isn't just a mining company. This is an entire community. Think about who you're really shutting down.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── Video testimony ── -->
+<div class="section-divider">
+  <h2>From the Hearing Room</h2>
+</div>
+
+<div class="video-testimony">
+
+  <div class="testimony-group">
+    <div class="testimony-label miners-label">⛏ The Miners</div>
+    <div class="testimony-videos single">
+      <video controls><source src="images/town-hall/townhall-miner.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+
+  <div class="testimony-group">
+    <div class="testimony-label farmers-label">🌾 The Farmers</div>
+    <div class="testimony-videos single">
+      <video controls><source src="images/town-hall/Townhall-Farmer.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+
+  <div class="testimony-group">
+    <div class="testimony-label fishers-label">🐟 The Fishers</div>
+    <div class="testimony-videos multi">
+      <video controls><source src="images/town-hall/townhall-fishermen.mp4" type="video/mp4"></video>
+      <video controls><source src="images/town-hall/townhall-fisherman-2.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+
+  <div class="testimony-group">
+    <div class="testimony-label investors-label">💰 The Investors</div>
+    <div class="testimony-videos single">
+      <video controls><source src="images/town-hall/Townhall-Inversor.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+
+  <div class="testimony-group">
+    <div class="testimony-label merchants-label">🏪 The Merchants</div>
+    <div class="testimony-videos multi">
+      <video controls><source src="images/town-hall/Townhall-Merch.mp4" type="video/mp4"></video>
+      <video controls><source src="images/town-hall/Townhall-Merch-2.mp4" type="video/mp4"></video>
+      <video controls><source src="images/town-hall/townhall-merch-3.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+
+  <div class="testimony-group">
+    <div class="testimony-label chair-label">The Empty Chair</div>
+    <div class="testimony-videos single">
+      <video controls><source src="images/town-hall/Townhall-Native-Woman.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ── The empty chair ── -->
+<div class="empty-chair" style="margin-top:2.5rem">
+  <div class="empty-chair-inner">
+    <h3>The seat that wasn't there</h3>
+    <p>In the middle of the proceedings, a character arrived at the Town Hall without a group, without a seat, without a role at the table: a <strong>Chinese miner</strong> or a <strong>Nisenan person</strong> — someone whose life had been upended by the Gold Rush before the first monitor was ever built.</p>
+    <p>They were told there was no seat for them. Asked to leave.</p>
+    <p>That moment — quiet, uncomfortable, not explained — was part of the lesson. Judge Sawyer's ruling was a landmark. But the hearing only had five chairs. Some people weren't invited to the argument at all, even though they had more at stake than anyone in the room.</p>
+  </div>
+</div>
+
+
+<!-- ── Real voices ── -->
+<section class="voices">
+  <div class="voices-inner">
+    <h2>Real Voices from 1874–1884</h2>
+    <p class="sub">The arguments the kids made had already been made — in newspapers, courtrooms, and legislative committees. These are the real ones.</p>
+
+    <div class="voices-grid">
+
+      <div class="voice-card">
+        <p class="speaker">The Farmers</p>
+        <blockquote>"Fertile farms, immense orchards, blooming gardens, costly improvements, and homes happy with all the surroundings that embellish communities — all are engulfed in a common destruction, and their owners have gone out bankrupted from the merciless invasion of a foe that has left them penniless."</blockquote>
+        <p class="attribution">— Majority Report, Legislative Committee on Mining Debris, 1878</p>
+      </div>
+
+      <div class="voice-card">
+        <p class="speaker">A Farmer, plainly</p>
+        <blockquote>"I have no objection to miners digging out all the gold they can find, but I don't want them to send the whole side of a hill down upon my ranch and bury me and all I have."</blockquote>
+        <p class="attribution">— James Keyes, farmer, 1874</p>
+      </div>
+
+      <div class="voice-card">
+        <p class="speaker">The Miners</p>
+        <blockquote>"The farmers of the valleys fail to remember that they located down on farms after the miners had acquired rights above the streams. Among the rights acquired by the miners was that of 'dumpage' into the tributaries of the rivers."</blockquote>
+        <p class="attribution">— Grass Valley Daily Union, January 1876</p>
+      </div>
+
+      <div class="voice-card">
+        <p class="speaker">The Fish Commission</p>
+        <blockquote>"The salmon certainly passed up these streams for a few years after extensive mining began, but their spawning beds being covered by sediment, their eggs would not mature; and as the old fish died or were killed, they became extinct in these streams."</blockquote>
+        <p class="attribution">— Report of the Commissioners of the Fisheries, 1875</p>
+      </div>
+
+      <div class="voice-card">
+        <p class="speaker">The Governor</p>
+        <blockquote>"The Sacramento Valley will, at no distant date, be rendered uninhabitable; that the rivers will cease to be navigable; that the cities of Marysville, Sacramento, and Colusa will be overwhelmed."</blockquote>
+        <p class="attribution">— Governor George Perkins, January 13, 1881</p>
+      </div>
+
+      <div class="voice-card">
+        <p class="speaker">An eyewitness, 1868</p>
+        <blockquote>"Tornado, flood, earthquake and volcano combined could hardly make greater havoc, spread wider ruin and wreck, than are to be seen everywhere in the track of the larger gold-washing operations."</blockquote>
+        <p class="attribution">— Samuel Bowles, 1868</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── The ruling ── -->
+<section class="ruling">
+  <div class="ruling-inner">
+    <p class="eyebrow">January 7, 1884 · San Francisco</p>
+    <blockquote>
+      "The defendant companies are perpetually enjoined and restrained from discharging or dumping into the Yuba River any of the tailings, boulders, cobble stones, gravel, sand, debris, or refuse matter."
+    </blockquote>
+    <p class="attribution">— Judge Lorenzo Sawyer · <em>Woodruff v. North Bloomfield Gravel Mining Company</em></p>
+
+    <div class="ruling-impact">
+      <div class="impact-stat">
+        <div class="number">225</div>
+        <p>pages in the ruling — front-page news across the state</p>
+      </div>
+      <div class="impact-stat">
+        <div class="number">#1</div>
+        <p>first environmental ruling in United States history</p>
+      </div>
+      <div class="impact-stat">
+        <div class="number">1884</div>
+        <p>hydraulic mining at Malakoff essentially ended</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Aftermath ── -->
+<div class="section-divider">
+  <h2>What Happened Next</h2>
+</div>
+
+<div class="aftermath">
+  <div class="aftermath-grid">
+
+    <div class="aftermath-block">
+      <h4>North Bloomfield</h4>
+      <p>By 1900 the population had shrunk by half. Buildings stood empty. WWI brought demolitions for lumber. Prohibition closed the saloons. The Depression brought former residents back — for free shelter in the shells of their old homes. By 1950, fewer than 20 permanent residents remained.</p>
+    </div>
+
+    <div class="aftermath-block">
+      <h4>The Rivers</h4>
+      <p>The Yuba River had been raised 50 feet above its 1849 level by sediment. Recovery took generations. The salmon did not return to the Yuba during the lifetimes of anyone who watched them disappear. Some runs were eventually restored — through deliberate, expensive effort, more than a century later.</p>
+    </div>
+
+    <div class="aftermath-block">
+      <h4>The Water System</h4>
+      <p>The 40-mile ditches and flumes built to feed the monitors didn't disappear — they were repurposed. PG&E bought many of them at the turn of the century to generate electricity. Some of those original Gold Rush ditches are still in use today.</p>
+    </div>
+
+    <div class="aftermath-block">
+      <h4>California's Direction</h4>
+      <p>The Sawyer Decision marked a turning point: after 1884, agriculture — not mining — became California's primary industry. The Central Valley that was nearly buried under tailings became the most productive farmland in the world. The ruling changed what California is.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Slideshow ── -->
+<div class="slideshow-wrap">
+  <div class="slideshow-header">
+    <h2>All Photos</h2>
+    <p class="slideshow-sub">Use arrows or keyboard ← → to browse · <span id="slide-counter"></span></p>
+  </div>
+  <div class="slideshow-stage">
+    <button class="slide-btn prev" onclick="slideMove(-1)">&#8592;</button>
+    <img id="slide-img" src="" alt="Town Hall photo">
+    <button class="slide-btn next" onclick="slideMove(1)">&#8594;</button>
+  </div>
+  <div class="slideshow-thumbs" id="slide-thumbs"></div>
+</div>
+
+<style>
+  .slideshow-wrap {
+    background: #1a1008;
+    padding: 3rem 2rem;
+    margin: 3rem 0;
+  }
+  .slideshow-header {
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+  }
+  .slideshow-header h2 {
+    color: var(--gold);
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .slideshow-sub {
+    color: #a09080;
+    font-size: 0.8rem;
+  }
+  .slideshow-stage {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .slideshow-stage img {
+    flex: 1;
+    max-height: 560px;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 2px solid var(--gold);
+    background: #000;
+    display: block;
+  }
+  .slide-btn {
+    background: rgba(200,169,110,0.15);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-size: 1.5rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .slide-btn:hover { background: rgba(200,169,110,0.35); }
+  .slideshow-thumbs {
+    max-width: 900px;
+    margin: 1.25rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .slideshow-thumbs img {
+    width: 72px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.15s, border-color 0.15s;
+  }
+  .slideshow-thumbs img:hover { opacity: 1; }
+  .slideshow-thumbs img.active { border-color: var(--gold); opacity: 1; }
+</style>
+
+<script>
+  const slides = [
+    "20260514_181908_result.webp",
+    "20260514_182750_result.webp",
+    "20260514_182804_result.webp",
+    "20260514_182830_result.webp",
+    "20260514_182907_result.webp",
+    "20260514_182908_result.webp",
+    "20260514_182930_result.webp",
+    "20260514_183131_result.webp",
+    "20260514_183959_result.webp",
+    "20260514_184002_result.webp",
+    "20260514_184006_result.webp",
+    "20260514_184112_result.webp",
+    "20260514_185701_result.webp",
+    "20260514_191545_result.webp",
+    "IMG_0956_result_result.webp",
+    "IMG_0958_result_result.webp",
+    "IMG_0960_result_result.webp",
+    "IMG_0963_result_result.webp",
+    "IMG_0964_result_result.webp",
+    "IMG_0965_result_result.webp",
+    "IMG_0966_result_result.webp",
+    "IMG_0968_result_result.webp",
+    "IMG_0969_result_result.webp",
+    "IMG_0970_result_result.webp",
+    "IMG_0971_result_result.webp",
+    "IMG_0972_result_result.webp",
+    "IMG_0973_result_result.webp",
+    "IMG_0974_result_result.webp",
+    "IMG_0975_result_result.webp",
+    "IMG_0976_result_result.webp",
+    "IMG_0977_result_result.webp",
+    "IMG_0978_result_result.webp",
+    "IMG_0980_result_result.webp",
+    "IMG_0981_result_result.webp",
+    "IMG_0984_result_result.webp",
+    "IMG_0986_result_result.webp",
+    "IMG_0987_result_result.webp",
+    "IMG_0989_result_result.webp",
+    "IMG_0990_result_result.webp",
+    "IMG_9649_result_result.webp",
+    "IMG_9651_result_result.webp",
+    "IMG_9666_result_result.webp",
+    "PXL_20260515_013104488_result.webp",
+    "PXL_20260515_013106102_result.webp",
+    "PXL_20260515_015719559_result.webp",
+    "PXL_20260515_020305219.MP_result.webp",
+    "PXL_20260515_020830059.MP_result.webp",
+    "PXL_20260515_023725280_result.webp",
+    "PXL_20260515_023734099_result.webp",
+    "PXL_20260515_024520347_result.webp",
+    "PXL_20260515_024523714_result.webp",
+    "PXL_20260515_024539569_result.webp",
+    "PXL_20260515_024553740_result.webp",
+    "PXL_20260515_024735362_result.webp",
+    "PXL_20260515_024741734_result.webp",
+    "PXL_20260515_024756260_result.webp",
+    "PXL_20260515_024818736_result.webp"
+  ].map(f => "images/town-hall/" + f);
+
+  let cur = 0;
+  const img = document.getElementById("slide-img");
+  const counter = document.getElementById("slide-counter");
+  const thumbsEl = document.getElementById("slide-thumbs");
+
+  // Build thumbnails
+  slides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src;
+    t.alt = "";
+    t.onclick = () => goTo(i);
+    thumbsEl.appendChild(t);
+  });
+
+  function goTo(n) {
+    cur = (n + slides.length) % slides.length;
+    img.src = slides[cur];
+    counter.textContent = (cur + 1) + " of " + slides.length;
+    thumbsEl.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === cur));
+    thumbsEl.querySelectorAll("img")[cur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function slideMove(d) { goTo(cur + d); }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft")  slideMove(-1);
+    if (e.key === "ArrowRight") slideMove(1);
+  });
+
+  goTo(0);
+</script>
+
+
+<!-- ── Debrief ── -->
+<div class="debrief">
+  <h2>After the gavel came down</h2>
+  <p>When Judge Sawyer announced his ruling, the kids were brought back to 2026 for a debrief. The questions were simple: Who won? Who didn't get a seat at the table? Would you rule differently? What's still unresolved?</p>
+  <p>The Nisenan people — whose territory the mine sat on, whose food sources the Gold Rush destroyed before the first monitor was ever built — were never part of the legal case. The Sawyer Decision protected rivers and farms. It did not address what had already been taken from the people who lived there first.</p>
+  <p>That gap is still open.</p>
+</div>
+
+
+<!-- ── Page nav ── -->
+<div class="page-nav">
+  <a href="map.html">← The Town</a>
+  <a href="characters.html" class="next">Meet the Characters →</a>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <strong>Gold Rush Field Trip 2026</strong><br>
+  Salmon Creek School · 4th Grade · Malakoff Diggins State Historic Park, CA
+</footer>
+
+</body>
+</html>

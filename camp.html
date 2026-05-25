@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrival &amp; Camp Life — Gold Rush 2026</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:   #c8a96e;
+      --dark:   #3a2a1a;
+      --brown:  #5c3a1e;
+      --cream:  #f5efe0;
+      --warm:   #fff8ec;
+      --red:    #c0392b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      font-family: Georgia, serif;
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      background: var(--brown);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.75rem 0;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      display: block;
+      color: #e8dcc8;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      background: var(--brown);
+      color: var(--cream);
+      padding: 3.5rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .page-header .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--cream);
+      border: none;
+      padding: 0;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .page-header p {
+      color: #d4c4a8;
+      font-size: 1rem;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── Section divider ──────────────────────────────────────── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 900px;
+      margin: 3.5rem auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .section-divider h2 {
+      font-size: 1.5rem;
+      color: var(--brown);
+      white-space: nowrap;
+    }
+
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    /* ── Prose block ──────────────────────────────────────────── */
+    .prose {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .prose p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .prose p strong { color: var(--brown); }
+
+    /* ── Photo strip ──────────────────────────────────────────── */
+    .photo-strip {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .photo-strip img {
+      height: 200px;
+      flex: 1 1 200px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 2px solid var(--gold);
+    }
+
+    .photo-placeholder {
+      height: 200px;
+      flex: 1 1 200px;
+      background: #e8dcc8;
+      border-radius: 4px;
+      border: 2px dashed var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #a09070;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* ── Feature block: Bandit hold-up ───────────────────────── */
+    .feature-dark {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 3.5rem 2rem;
+      margin: 3rem 0;
+    }
+
+    .feature-dark-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) {
+      .feature-dark-inner { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .feature-dark h2 {
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .feature-dark p {
+      color: #d4c4a8;
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .feature-dark p strong { color: var(--gold); }
+
+    .feature-photo {
+      background: #2a1a0a;
+      border: 2px solid rgba(200,169,110,0.3);
+      border-radius: 6px;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #7a6040;
+      text-align: center;
+      padding: 1rem;
+      overflow: hidden;
+    }
+
+    .feature-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+
+    /* ── Black Bart aside ─────────────────────────────────────── */
+    .aside-card {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 2rem;
+    }
+
+    .aside-card-inner {
+      background: var(--warm);
+      border-left: 5px solid var(--red);
+      border-radius: 0 6px 6px 0;
+      padding: 1.5rem 1.75rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .aside-icon {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .aside-card h3 {
+      font-size: 1.1rem;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+
+    .aside-card p {
+      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .aside-card blockquote {
+      font-style: italic;
+      color: var(--brown);
+      border-top: 1px solid var(--gold);
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    /* ── Trading Post ─────────────────────────────────────────── */
+    .trading-post {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .tp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .tp-station {
+      background: var(--warm);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .tp-station .icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tp-station h4 {
+      font-size: 0.95rem;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+
+    .tp-station p {
+      font-size: 0.8rem;
+      color: #6a5030;
+      line-height: 1.5;
+    }
+
+    /* ── The lesson callout ───────────────────────────────────── */
+    .lesson-callout {
+      background: var(--gold);
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      border-radius: 0;
+    }
+
+    .lesson-callout-inner {
+      padding: 1.75rem;
+      border-radius: 6px;
+    }
+
+    .lesson-callout h3 {
+      font-size: 1rem;
+      color: var(--brown);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .lesson-callout p {
+      font-size: 0.95rem;
+      color: var(--brown);
+      font-style: italic;
+    }
+
+    /* ── Campfire ─────────────────────────────────────────────── */
+    .campfire-section {
+      background: var(--dark);
+      padding: 3.5rem 2rem;
+      margin-top: 3rem;
+    }
+
+    .campfire-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .campfire-inner h2 {
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .campfire-inner .sub {
+      color: #a09080;
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .campfire-inner > p {
+      color: #d4c4a8;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      max-width: 660px;
+    }
+
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .char-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(200,169,110,0.25);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .char-card h4 {
+      font-size: 0.95rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .char-card p {
+      font-size: 0.82rem;
+      color: #b8a888;
+      line-height: 1.55;
+    }
+
+    /* ── Next page nav ────────────────────────────────────────── */
+    .page-nav {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .page-nav a {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      border: 2px solid var(--brown);
+      border-radius: 4px;
+      color: var(--brown);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .page-nav a:hover {
+      background: var(--brown);
+      color: var(--cream);
+    }
+
+    .page-nav .next {
+      background: var(--brown);
+      color: var(--cream);
+      border-color: var(--brown);
+    }
+
+    .page-nav .next:hover {
+      background: var(--dark);
+      border-color: var(--dark);
+    }
+
+    /* ── Slideshow ───────────────────────────────────────────────── */
+    .slideshow-wrap {
+      background: #1a1008;
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+    }
+    .slideshow-header {
+      max-width: 900px;
+      margin: 0 auto 1.5rem;
+    }
+    .slideshow-header h2 {
+      color: var(--gold);
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+    .slideshow-sub {
+      color: #a09080;
+      font-size: 0.8rem;
+    }
+    .slideshow-stage {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .slideshow-stage img {
+      flex: 1;
+      max-height: 560px;
+      width: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+      border: 2px solid var(--gold);
+      background: #000;
+      display: block;
+    }
+    .slide-btn {
+      background: rgba(200,169,110,0.15);
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      font-size: 1.5rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .slide-btn:hover { background: rgba(200,169,110,0.35); }
+    .slideshow-thumbs {
+      max-width: 900px;
+      margin: 1.25rem auto 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .slideshow-thumbs img {
+      width: 72px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 3px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.15s, border-color 0.15s;
+    }
+    .slideshow-thumbs img:hover { opacity: 1; }
+    .slideshow-thumbs img.active { border-color: var(--gold); opacity: 1; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: #a09080;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      margin-top: 3rem;
+    }
+
+    footer strong { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <a class="nav-logo" href="index.html">⛏ Gold Rush 2026</a>
+  <ul class="nav-links">
+    <li><a href="camp.html" class="active">Arrival &amp; Camp</a></li>
+    <li><a href="map.html">The Town</a></li>
+    <li><a href="diggings.html">The Diggings</a></li>
+    <li><a href="townhall.html">Town Hall</a></li>
+    <li><a href="characters.html">Characters</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- ── Page header ── -->
+<header class="page-header">
+  <p class="eyebrow">Act I · Wednesday, May 13</p>
+  <h1>Arrival &amp; Camp Life</h1>
+  <p>You're a greenhorn. You have no gold, no lodging, no supplies. By the time the sun sets, you'll have been robbed, grubstaked, taxed, and maybe cleaned out at the gambling table. Welcome to the Gold Rush.</p>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- THE HOLD-UP                                                  -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="feature-dark">
+  <div class="feature-dark-inner">
+    <div>
+      <h2>The Bandit<br>Hold-Up</h2>
+      <p>Before the kids had even unpacked, it happened. Two bandits stepped out and the hold-up was on. Empty your pockets. Hand it over.</p>
+      <p>It became clear fast: <strong>no gold, no lodging paid, no mining supplies</strong>. They were greenhorns — brand new to California, without a claim or a coin to their name.</p>
+      <p>Then came the offer. A grubstake — a loan of miner's bucks to get started, to be repaid after tomorrow's panning. Take the deal or go without. Every kid took the deal. That's how you became a forty-niner.</p>
+      <p>The bandits were a hit. <strong>Black Bart</strong> — the gentleman poet bandit — was the standout: polished, theatrical, never firing a shot. Not exactly what anyone expected from an outlaw.</p>
+    </div>
+    <div class="feature-photo">
+      <img src="images/camp/bandit-holdup/20260513_140902_result.webp" alt="Bandit hold-up">
+    </div>
+  </div>
+</div>
+
+<!-- Black Bart aside -->
+<div class="aside-card">
+  <div class="aside-card-inner">
+    <div class="aside-icon">🎩</div>
+    <div>
+      <h3>Who was Black Bart?</h3>
+      <p>Charles Boles — known as Black Bart — robbed 28 stagecoaches between 1875 and 1883. He never fired a shot. He was unfailingly polite. And at several crime scenes, he left behind a poem.</p>
+      <blockquote>
+        "I've labored long and hard for bread,<br>
+        For honor and for riches,<br>
+        But on my corns too long you've tread,<br>
+        You fine-haired sons of bitches."<br>
+        <cite style="display:block;margin-top:0.5rem;font-size:0.8rem;font-style:normal;opacity:0.7">— Black Bart, left at the scene of a Wells Fargo robbery, 1877</cite>
+      </blockquote>
+      <p style="font-size:0.85rem;margin-top:0.75rem">He was eventually caught — not by a gunfight, but by a laundry mark on a handkerchief. He served six years in San Quentin, was released, and was never heard from again.</p>
+    </div>
+  </div>
+</div>
+
+<div class="photo-strip">
+  <img src="images/camp/bandit-holdup/20260513_140902_result.webp" alt="Bandit hold-up">
+  <img src="images/camp/bandit-holdup/20260513_140905_result.webp" alt="Bandit hold-up">
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MINING GROUPS                                                -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-divider">
+  <h2>Mining Groups</h2>
+</div>
+
+<div class="prose">
+  <p>Every miner needed a crew. The kids were divided into four mining groups, each given a color-coded bandana — and each bandana carried a hidden meaning about how they'd be treated in Gold Rush California.</p>
+</div>
+
+<div class="trading-post" style="margin-top:1.5rem">
+  <div class="tp-grid">
+    <div class="tp-station">
+      <div class="icon">🟡</div>
+      <h4>Eureka — Gold</h4>
+      <p>Representing white American miners. The favored group. More opportunities, better treatment, first pick at the claims.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">🔴</div>
+      <h4>Argonauts — Red</h4>
+      <p>Representing Chinese, Native, Black, and Mexican miners. The most discrimination — worst claims, devalued gold, told to go home.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">🟢</div>
+      <h4>Greenhorns — Green</h4>
+      <p>Brand new arrivals. Just that — fresh off the boat, learning the rules as they went.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">🔵</div>
+      <h4>Bonanza — Blue</h4>
+      <p>Representing European and South American miners. More subtle discrimination — not as bad as red, but not as free as gold.</p>
+    </div>
+  </div>
+</div>
+
+<div class="prose" style="margin-top:0.5rem">
+  <p>The bandana system wasn't explained up front. Kids experienced the different treatment first, and put the meaning together as the trip went on. That was the point.</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TRADING POST                                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="section-divider">
+  <h2>The Trading Post</h2>
+</div>
+
+<div class="prose">
+  <p>Wednesday evening, the camp lodge became a Gold Rush boomtown. The <strong>Trading Post simulation</strong> was the first real test: could you hold onto your grubstake, or would it drain away before morning?</p>
+  <p>Real miner's bucks in hand, the kids moved between stations — buying, selling, gambling, and getting taxed whether they liked it or not.</p>
+</div>
+
+<div class="trading-post">
+  <div class="tp-grid">
+    <div class="tp-station">
+      <div class="icon">🏪</div>
+      <h4>Trading Post</h4>
+      <p>Buy supplies for tomorrow's mining. You need equipment to work a claim — and supplies cost money you may not have.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">⚖️</div>
+      <h4>Assay Office</h4>
+      <p>Weigh and value your gold. Not all gold is equal — and the assayer decides what yours is worth.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">🏦</div>
+      <h4>Bank</h4>
+      <p>Store your miner's bucks. Or don't. Plenty of miners kept everything in their poke — and lost it all at the gambling table.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">🏨</div>
+      <h4>Hotel</h4>
+      <p>Pay for your lodging. The grubstake you borrowed? Some of it goes here first, before you've seen a flake of gold.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">🃏</div>
+      <h4>Gambling</h4>
+      <p>The tempting one. The odds are against you — they always were — but plenty of miners thought this time would be different. It usually wasn't.</p>
+    </div>
+    <div class="tp-station">
+      <div class="icon">🧠</div>
+      <h4>Knowledge Holders</h4>
+      <p>Answer a Gold Rush question correctly and earn bonus gold. The one station where knowing something paid off directly.</p>
+    </div>
+  </div>
+</div>
+
+<div class="aside-card" style="margin-top:1.5rem">
+  <div class="lesson-callout-inner" style="background:var(--gold);border-radius:6px;padding:1.75rem">
+    <h3 style="font-size:1rem;color:var(--brown);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem">The Real Lesson</h3>
+    <p style="font-size:0.95rem;color:var(--brown);font-style:italic">Most forty-niners didn't get rich from gold. The people who got rich sold supplies, ran hotels, operated saloons — or, like Levi Strauss, made pants. The Trading Post taught this the hard way: by the end of the evening, the money had mostly moved from the miners to the merchants. Just like 1849.</p>
+  </div>
+</div>
+
+<div class="photo-strip">
+  <img src="images/camp/trading-post/IMG_3394_result.webp" alt="Trading Post">
+  <img src="images/camp/trading-post/IMG_3397_result.webp" alt="Trading Post">
+  <img src="images/camp/trading-post/IMG_3400_result.webp" alt="Trading Post">
+  <img src="images/camp/trading-post/IMG_9551_result_result.webp" alt="Trading Post">
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CAMPFIRE                                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="campfire-section">
+  <div class="campfire-inner">
+    <h2>The Campfire</h2>
+    <p class="sub">Wednesday evening · Ross Relles</p>
+
+    <p>After dinner, the fire was lit. A group of newly arrived gold seekers gathered around it — each with a different story of how they got to California. Five very different journeys. One shared hope.</p>
+
+    <div class="characters-grid">
+
+      <div class="char-card">
+        <h4>🚢 The Yankee Argonaut</h4>
+        <p>Sailed around Cape Horn — six months at sea. 183 passengers, all men except one 12-year-old boy. The food was terrible, but the boredom was worse. Captain Swain raced another ship through the deadly Strait of Magellan and won — by risking everyone's lives.</p>
+      </div>
+
+      <div class="char-card">
+        <h4>🌴 The Panama Route</h4>
+        <p>Crossed the Isthmus of Panama on foot — the shortcut from the East Coast. Faster than the Horn, but the jungle had its own ideas about what "shortcut" meant. Malaria, mud, and heat the whole way through.</p>
+      </div>
+
+      <div class="char-card">
+        <h4>🛤 The Pioneer Mom</h4>
+        <p>Overland trail. Twenty-five covered wagons, three miles per hour, five months walking. Worst part: getting wagons across rivers and deserts. At the end, coming over the Sierra Nevada, people threw away precious possessions they'd carried the entire way — just to make the final climb.</p>
+      </div>
+
+      <div class="char-card">
+        <h4>🌵 The Mexican Miner</h4>
+        <p>Came overland from Sonora — a long hot journey on foot with one mule. Surprised to find Yankees acting like California had always been theirs, even though it belonged to Mexico until very recently. Planning to make money fast and go home.</p>
+      </div>
+
+      <div class="char-card">
+        <h4>🏮 The Chinese Miner</h4>
+        <p>Only leftover claims on the creek. Gold not worth what others' gold was worth — nothing he could do about it. Started growing vegetables in the China garden; makes more money that way. Plans to go home as soon as he has enough. His grandmother worries that if he dies in California, his soul will wander there forever.</p>
+      </div>
+
+    </div>
+
+    <div class="photo-strip" style="margin-top:2rem;padding:0">
+      <img src="images/camp/campfire/IMG_3406_result.webp" alt="Campfire">
+      <img src="images/camp/campfire/IMG_3409_result.webp" alt="Campfire">
+      <img src="images/camp/campfire/IMG_9569_result_result.webp" alt="Campfire">
+    </div>
+
+    <div style="margin-top:1.5rem;background:#0e0a04;border-radius:4px;padding:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;color:#c8a96e;font-size:0.8rem;font-weight:bold;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.75rem">
+        <span>All Campfire Photos</span>
+        <span id="campfire-counter" style="opacity:0.7;font-weight:normal"></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <button class="slide-btn" onclick="campfireSlide(-1)">&#8592;</button>
+        <img id="campfire-img" src="" alt="Campfire photo" style="flex:1;max-height:380px;width:100%;object-fit:contain;border-radius:3px;border:1px solid #c8a96e;background:#000;display:block">
+        <button class="slide-btn" onclick="campfireSlide(1)">&#8594;</button>
+      </div>
+      <div id="campfire-thumbs" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:0.75rem"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── Group photos ── -->
+<div class="slideshow-wrap">
+  <div class="slideshow-header">
+    <h2>Group Photos</h2>
+    <p class="slideshow-sub">Use arrows or keyboard ← → to browse · <span id="group-counter"></span></p>
+  </div>
+  <div class="slideshow-stage">
+    <button class="slide-btn" onclick="groupSlide(-1)">&#8592;</button>
+    <img id="group-img" src="" alt="Group photo">
+    <button class="slide-btn" onclick="groupSlide(1)">&#8594;</button>
+  </div>
+  <div class="slideshow-thumbs" id="group-thumbs"></div>
+</div>
+
+<script>
+  // Campfire slideshow
+  const campfireSlides = [
+    "IMG_3406_result.webp","IMG_3409_result.webp","IMG_3412_result.webp",
+    "IMG_3414_result.webp","IMG_9569_result_result.webp","IMG_9574_result_result.webp"
+  ].map(f => "images/camp/campfire/" + f);
+
+  let campfireCur = 0;
+  const campfireImg = document.getElementById("campfire-img");
+  const campfireCounter = document.getElementById("campfire-counter");
+  const campfireThumbs = document.getElementById("campfire-thumbs");
+
+  campfireSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.style.cssText = "width:58px;height:44px;object-fit:cover;border-radius:2px;border:2px solid transparent;cursor:pointer;opacity:0.55;transition:opacity 0.15s,border-color 0.15s";
+    t.onmouseover = () => t.style.opacity = 1;
+    t.onmouseout  = () => { if (!t.classList.contains("cf-active")) t.style.opacity = 0.55; };
+    t.onclick = () => campfireGoTo(i);
+    campfireThumbs.appendChild(t);
+  });
+
+  function campfireGoTo(n) {
+    campfireCur = (n + campfireSlides.length) % campfireSlides.length;
+    campfireImg.src = campfireSlides[campfireCur];
+    campfireCounter.textContent = (campfireCur + 1) + " of " + campfireSlides.length;
+    campfireThumbs.querySelectorAll("img").forEach((t, i) => {
+      const active = i === campfireCur;
+      t.style.borderColor = active ? "#c8a96e" : "transparent";
+      t.style.opacity = active ? 1 : 0.55;
+      t.classList.toggle("cf-active", active);
+    });
+  }
+  function campfireSlide(d) { campfireGoTo(campfireCur + d); }
+  campfireGoTo(0);
+
+  // Group photos slideshow
+  const groupSlides = [
+    "20260514_094740_result.webp","20260515_113441_result.webp","20260515_120114_result.webp",
+    "20260515_120145_result.webp","IMG_0832_result_result.webp","IMG_0833_result_result.webp",
+    "IMG_0897_result_result.webp","IMG_0898_result_result.webp","IMG_0930_result_result.webp",
+    "IMG_0992_result_result.webp","IMG_0993_result_result.webp","IMG_0994_result_result.webp",
+    "IMG_0999_result_result.webp","IMG_1012_result_result.webp","IMG_1017_result_result.webp",
+    "IMG_1018_result_result.webp","IMG_1019_result_result.webp","IMG_1020_result_result.webp",
+    "IMG_1021_result_result.webp","IMG_1023_result_result.webp","IMG_1024_result_result.webp",
+    "IMG_1025_result_result.webp","IMG_1027_result_result.webp","IMG_1028_result_result.webp",
+    "IMG_1030_result_result.webp","IMG_1032_result_result.webp","IMG_1033_result_result.webp",
+    "IMG_1034_result_result.webp","IMG_1036_result_result.webp","IMG_1037_result_result.webp",
+    "IMG_3297_result_result.webp","IMG_3300_result_result.webp","IMG_3301_result_result.webp",
+    "IMG_3310_result_result.webp","IMG_3311_result_result.webp","IMG_3313_result_result.webp",
+    "IMG_3314_result_result.webp","IMG_3323_result_result.webp","IMG_3324_result_result.webp",
+    "IMG_6959_result_result.webp","IMG_6961_result_result.webp","IMG_9599_result_result.webp",
+    "IMG_9625_result_result.webp","PXL_20260515_183540307.MP_result.webp","PXL_20260515_183544315_result.webp",
+    "PXL_20260515_195400384.MP_result.webp","PXL_20260515_195401297_result.webp",
+    "PXL_20260515_195411470.MP_result.webp","PXL_20260515_195424499.MP_result.webp",
+    "PXL_20260515_195426721.MP_result.webp"
+  ].map(f => "images/group/" + f);
+
+  let groupCur = 0;
+  const groupImg = document.getElementById("group-img");
+  const groupCounter = document.getElementById("group-counter");
+  const groupThumbs = document.getElementById("group-thumbs");
+
+  groupSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => groupGoTo(i);
+    groupThumbs.appendChild(t);
+  });
+
+  function groupGoTo(n) {
+    groupCur = (n + groupSlides.length) % groupSlides.length;
+    groupImg.src = groupSlides[groupCur];
+    groupCounter.textContent = (groupCur + 1) + " of " + groupSlides.length;
+    groupThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === groupCur));
+    groupThumbs.querySelectorAll("img")[groupCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function groupSlide(d) { groupGoTo(groupCur + d); }
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft")  groupSlide(-1);
+    if (e.key === "ArrowRight") groupSlide(1);
+  });
+  groupGoTo(0);
+</script>
+
+<!-- ── Page nav ── -->
+<div class="page-nav">
+  <a href="index.html">← Home</a>
+  <a href="map.html" class="next">The Town →</a>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <strong>Gold Rush Field Trip 2026</strong><br>
+  Salmon Creek School · 4th Grade · Malakoff Diggins State Historic Park, CA
+</footer>
+
+</body>
+</html>

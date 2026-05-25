@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Rush Field Trip — Salmon Creek School 2026</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:   #c8a96e;
+      --dark:   #3a2a1a;
+      --brown:  #5c3a1e;
+      --cream:  #f5efe0;
+      --warm:   #fff8ec;
+      --red:    #c0392b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      font-family: Georgia, serif;
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      background: var(--brown);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.75rem 0;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      display: block;
+      color: #e8dcc8;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      background: var(--brown);
+      color: var(--cream);
+      text-align: center;
+      padding: 5rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      /* subtle texture layer */
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(0,0,0,0.03) 40px,
+        rgba(0,0,0,0.03) 41px
+      );
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.2;
+      color: var(--cream);
+      margin-bottom: 1rem;
+      border: none;
+      padding: 0;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: #d4c4a8;
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 0 auto;
+    }
+
+    /* ── Intro section ────────────────────────────────────────── */
+    .intro {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      text-align: center;
+    }
+
+    .intro p {
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    .intro p strong {
+      color: var(--brown);
+    }
+
+    /* ── Three acts ───────────────────────────────────────────── */
+    .acts {
+      background: var(--brown);
+      padding: 3.5rem 2rem;
+    }
+
+    .acts-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .acts h2 {
+      text-align: center;
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .acts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .act-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(200,169,110,0.3);
+      border-radius: 6px;
+      padding: 1.75rem;
+      color: var(--cream);
+      position: relative;
+    }
+
+    .act-number {
+      font-size: 3rem;
+      font-weight: bold;
+      color: rgba(200,169,110,0.25);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+
+    .act-card h3 {
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .act-card p {
+      font-size: 0.9rem;
+      color: #d4c4a8;
+      line-height: 1.6;
+    }
+
+    /* ── Section nav cards ────────────────────────────────────── */
+    .section-cards {
+      max-width: 1000px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-cards h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-cards .lead {
+      text-align: center;
+      color: #7a6040;
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--warm);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--dark);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(92,58,30,0.15);
+    }
+
+    .card-thumb {
+      height: 160px;
+      background: var(--brown);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: rgba(200,169,110,0.5);
+      overflow: hidden;
+    }
+
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #6a5030;
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .card-cta {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--red);
+      font-weight: bold;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Pull quote ───────────────────────────────────────────── */
+    .pullquote {
+      background: var(--gold);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .pullquote blockquote {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--brown);
+      line-height: 1.6;
+    }
+
+    .pullquote cite {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      font-style: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brown);
+      opacity: 0.7;
+    }
+
+    /* ── Elephant section ─────────────────────────────────────── */
+    .elephant {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      border-left: 4px solid var(--gold);
+      padding-left: 2rem;
+    }
+
+    .elephant h2 {
+      font-size: 1.3rem;
+      color: var(--brown);
+      margin-bottom: 0.75rem;
+    }
+
+    .elephant p {
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* ── People section ──────────────────────────────────────── */
+    .people {
+      background: var(--warm);
+      padding: 4rem 2rem;
+      border-top: 3px solid var(--gold);
+    }
+
+    .people-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .people h2 {
+      text-align: center;
+      font-size: 1.4rem;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+
+    .people .people-lead {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #7a6040;
+      margin-bottom: 3rem;
+    }
+
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .person-card {
+      text-align: center;
+    }
+
+    .person-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      border: 4px solid var(--gold);
+      margin: 0 auto 1.25rem;
+      display: block;
+      box-shadow: 0 4px 16px rgba(92,58,30,0.18);
+    }
+
+    .person-card h3 {
+      font-size: 1.15rem;
+      color: var(--brown);
+      margin-bottom: 0.25rem;
+    }
+
+    .person-role {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+
+    .person-card p {
+      font-size: 0.88rem;
+      color: #5a4020;
+      line-height: 1.6;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    /* Susan — spans full width on wide screens to honour her story */
+    .person-card.featured {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5rem;
+      text-align: left;
+      background: var(--cream);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 2rem 2.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .person-card.featured {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
+    .person-card.featured .person-photo {
+      width: 180px;
+      height: 180px;
+      flex-shrink: 0;
+      margin: 0;
+    }
+
+    .person-card.featured .person-text h3 {
+      font-size: 1.3rem;
+      color: var(--brown);
+      margin-bottom: 0.3rem;
+    }
+
+    .person-card.featured .person-text .person-role {
+      margin-bottom: 1rem;
+    }
+
+    .person-card.featured .person-text p {
+      max-width: 100%;
+      margin: 0 0 0.65rem;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: #a09080;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+    }
+
+    footer strong { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <a class="nav-logo" href="index.html">⛏ Gold Rush 2026</a>
+  <ul class="nav-links">
+    <li><a href="camp.html">Arrival &amp; Camp</a></li>
+    <li><a href="map.html">The Town</a></li>
+    <li><a href="diggings.html">The Diggings</a></li>
+    <li><a href="townhall.html">Town Hall</a></li>
+    <li><a href="characters.html">Characters</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <p class="hero-eyebrow">Salmon Creek School · 4th Grade · May 2026</p>
+  <h1>Going to See<br>the Elephant</h1>
+  <p class="hero-sub">Three days in the California Gold Rush — as miners, merchants, gamblers, farmers, and fishers. One question to answer: who wins?</p>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- ── Intro ── -->
+<section class="intro">
+  <p>In May 2026, the 4th graders of Salmon Creek School traveled to <strong>Malakoff Diggins State Historic Park</strong> — home of the world's largest hydraulic gold mine, a ghost town called North Bloomfield, and the courtroom where the first environmental ruling in American history was handed down.</p>
+  <p>They didn't just read about it. They lived it: robbed by bandits, grubstaked by strangers, panning for gold in Humbug Creek, arguing their case before Judge Sawyer. This site tells the story of what they saw, learned, and made.</p>
+</section>
+
+<!-- ── Three acts ── -->
+<section class="acts">
+  <div class="acts-inner">
+    <h2>The Story in Three Acts</h2>
+    <div class="acts-grid">
+
+      <div class="act-card">
+        <div class="act-number">I</div>
+        <h3>Arrival</h3>
+        <p>You're a greenhorn. Bandits rob you before you've unpacked. You have no gold, no lodging paid, no supplies. A stranger offers you a grubstake — a loan against tomorrow's panning. You take it. Suddenly you're a 49er.</p>
+        <p style="margin-top:0.75rem">That evening: the Trading Post. Learn fast — gamble wrong and your grubstake is gone before morning.</p>
+      </div>
+
+      <div class="act-card">
+        <div class="act-number">II</div>
+        <h3>The Town</h3>
+        <p>North Bloomfield, 1884. You rotate through the saloon, the general store, the pharmacy, the blacksmith's fire. You pan for gold at Humbug Creek. You walk the cemetery and read the names.</p>
+        <p style="margin-top:0.75rem">Every stop tells you something different about who came here, what they wanted, and what it cost them.</p>
+      </div>
+
+      <div class="act-card">
+        <div class="act-number">III</div>
+        <h3>The Town Hall</h3>
+        <p>The miners need the water cannons running. The farmers are buried in debris. The fishers have watched the salmon disappear. The investors want their money back. Judge Sawyer is coming to town.</p>
+        <p style="margin-top:0.75rem">You have one evening to make your case. The ruling is real. The consequences were permanent.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Section cards ── -->
+<section class="section-cards">
+  <h2>Explore the Trip</h2>
+  <p class="lead">Click any section to go deeper.</p>
+
+  <div class="cards-grid">
+
+    <a class="card" href="camp.html">
+      <div class="card-thumb"><img src="images/camp/bandit-holdup/20260513_140902_result.webp" alt="Arrival &amp; Camp"></div>
+      <div class="card-body">
+        <p class="card-tag">Act I · Wednesday</p>
+        <h3>Arrival &amp; Camp Life</h3>
+        <p>The bandit hold-up. The Trading Post simulation — grubstakes, gambling, taxes, and the hard lesson that most miners died broke. The campfire, and five ways to get to California.</p>
+        <p class="card-cta">Enter camp →</p>
+      </div>
+    </a>
+
+    <a class="card" href="map.html">
+      <div class="card-thumb">
+        <img src="images/map/cartoon-town-labeled.jpg" alt="North Bloomfield town map">
+      </div>
+      <div class="card-body">
+        <p class="card-tag">Act II · Thursday Morning</p>
+        <h3>The Town</h3>
+        <p>An interactive map of North Bloomfield. Click each building — the saloon, blacksmith, general store, pharmacy, museum, and cemetery — to hear its story.</p>
+        <p class="card-cta">Explore the town →</p>
+      </div>
+    </a>
+
+    <a class="card" href="diggings.html">
+      <div class="card-thumb"><img src="images/diggings/IMG_0996_result_result.webp" alt="The Diggings"></div>
+      <div class="card-body">
+        <p class="card-tag">Act II · Thursday Afternoon</p>
+        <h3>The Diggings</h3>
+        <p>The Malakoff pit: 6,800 feet long, 600 feet deep, 41 million cubic yards of earth blasted away by water cannons. How it worked, what it cost, and what it destroyed forever.</p>
+        <p class="card-cta">See the scale →</p>
+      </div>
+    </a>
+
+    <a class="card" href="townhall.html">
+      <div class="card-thumb"><img src="images/town-hall/20260514_181908_result.webp" alt="The Town Hall"></div>
+      <div class="card-body">
+        <p class="card-tag">Act III · Thursday Evening</p>
+        <h3>The Town Hall</h3>
+        <p>Miners. Farmers. Fishers. Investors. Townspeople. Each group made their case before Judge Sawyer. His ruling — 225 pages, January 7, 1884 — became the first environmental law in the United States.</p>
+        <p class="card-cta">Enter the courtroom →</p>
+      </div>
+    </a>
+
+    <a class="card" href="characters.html">
+      <div class="card-thumb"><img src="images/charactors/lola-montez.webp" alt="Characters"></div>
+      <div class="card-body">
+        <p class="card-tag">Living History</p>
+        <h3>Meet the Characters</h3>
+        <p>Lola Montez, who ruled Bavaria and plotted to crown herself Queen of Lolaland. Charlie Parkhurst, the stagecoach driver who was the first woman to vote in America. Lucky Dave Bowen, buried alive — and dug out.</p>
+        <p class="card-cta">Meet them →</p>
+      </div>
+    </a>
+
+    <a class="card" href="glossary.html">
+      <div class="card-thumb">📜</div>
+      <div class="card-body">
+        <p class="card-tag">Reference</p>
+        <h3>Gold Rush Glossary</h3>
+        <p>From <em>amalgam</em> to <em>tailings</em> — plus the slang. "By the great horned spoon!" "Flatulent balderdash!" "Wet my whistle." The words miners actually used in 1849.</p>
+        <p class="card-cta">Look it up →</p>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ── Pull quote ── -->
+<section class="pullquote">
+  <blockquote>
+    "I think that I may without vanity affirm that I have 'seen the elephant.'"
+    <cite>— Louisa Clapp, California Gold Rush, 1851</cite>
+  </blockquote>
+</section>
+
+<!-- ── Seeing the elephant ── -->
+<section class="elephant">
+  <h2>What does it mean to "see the elephant"?</h2>
+  <p>A farmer heard the circus was in town. He loaded his wagon with vegetables — he'd always wanted to see an elephant. On the way, he met the circus parade, led by the elephant itself. He was thrilled. His horses were terrified. They bolted, overturned the wagon, and ruined everything he was carrying.</p>
+  <p>"I don't give a hang," said the farmer. "For I have seen the elephant."</p>
+  <p>For forty-niners, the elephant was the Gold Rush — the adventure, the cost, the myriad ways it could ruin you — and, like the farmer's circus elephant, <strong>the experience of a lifetime, even if it cost you everything you brought.</strong></p>
+</section>
+
+<!-- ── The People Behind the Trip ── -->
+<section class="people">
+  <div class="people-inner">
+    <h2>The People Who Made It Happen</h2>
+    <p class="people-lead">Every great adventure has guides. This one had three.</p>
+
+    <div class="people-grid">
+
+      <!-- Susan McGovern — featured, her story deserves room -->
+      <div class="person-card featured">
+        <img class="person-photo" src="images/susan-mcgovern.webp" alt="Susan McGovern">
+        <div class="person-text">
+          <h3>Susan McGovern</h3>
+          <p class="person-role">Trip Founder &amp; Living Tradition</p>
+          <p>Susan McGovern organised this Gold Rush field trip for many years, shaping it into one of the most memorable experiences a Salmon Creek student can have. The bandit hold-up, the Trading Post, the Town Hall, the campfire characters — the bones of what these kids experienced trace back to her vision.</p>
+          <p>When the time came to hand the trip on, Susan came out of retirement to walk the new teacher through every detail — every character, every lesson, every choreographed crisis — so that nothing would be lost. Then she stepped back and let the tradition belong to the next generation.</p>
+          <p>That kind of generosity is rarer than gold.</p>
+        </div>
+      </div>
+
+      <!-- Kelsey -->
+      <div class="person-card">
+        <img class="person-photo" src="images/kelsey (1).webp" alt="Kelsey, 4th grade teacher">
+        <h3>Kelsey</h3>
+        <p class="person-role">4th Grade Teacher</p>
+        <p>Kelsey led the 2026 trip from the opening bandit ambush to the final morning on the Yuba River. She carried Susan's tradition forward — and made it entirely her own.</p>
+      </div>
+
+      <!-- Olivia -->
+      <div class="person-card">
+        <img class="person-photo" src="images/olivia.webp" alt="Olivia, teacher's aide">
+        <h3>Olivia</h3>
+        <p class="person-role">Teacher's Aide</p>
+        <p>Olivia was there for every moment — keeping 4th graders fed, safe, focused, and laughing through three days of living history. Field trips don't happen without people like her.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <strong>Gold Rush Field Trip 2026</strong><br>
+  Salmon Creek School · 4th Grade · Malakoff Diggins State Historic Park, CA
+</footer>
+
+</body>
+</html>
