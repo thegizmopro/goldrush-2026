@@ -73,6 +73,49 @@
       background: rgba(255,255,255,0.07);
     }
 
+    /* Hamburger button — hidden on desktop */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-size: 1.6rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      line-height: 1;
+    }
+
+    /* ── Mobile nav (≤768px) ─────────────────────────────── */
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: nowrap;
+        padding: 0 1rem;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        order: 3;
+        background: var(--brown);
+        border-top: 1px solid rgba(200,169,110,0.25);
+        padding-bottom: 0.5rem;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(200,169,110,0.1);
+      }
+    }
+
     /* ── Page header ──────────────────────────────────────────── */
     .page-header {
       background: var(--dark);
@@ -633,6 +676,7 @@
 <!-- ── Nav ── -->
 <nav>
   <a class="nav-logo" href="index.html">⛏ Gold Rush 2026</a>
+  <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
   <ul class="nav-links">
     <li><a href="camp.html">Arrival &amp; Camp</a></li>
     <li><a href="map.html">The Town</a></li>
