@@ -171,6 +171,47 @@
       *, *::before, *::after {
         max-width: 100vw;
       }
+
+      /* Reduce section padding on mobile */
+      .prose, .section-divider, .photo-strip, .setup,
+      .groups-section, .page-nav, .debrief, .aftermath,
+      .video-testimony {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      /* Strip card chrome on mobile */
+      .group-card { border: none; border-radius: 0; }
+      .group-body {
+        background: transparent;
+        padding: 0.75rem 0;
+        border-radius: 0;
+      }
+      .voice-card {
+        border: none;
+        background: transparent;
+        padding: 0.75rem 0;
+        border-radius: 0;
+        border-left: 3px solid rgba(200,169,110,0.4);
+      }
+      .empty-chair-inner {
+        background: transparent;
+        border: none;
+        border-left: 4px solid var(--red);
+        padding: 0.75rem 0;
+        border-radius: 0;
+      }
+      .aftermath-block {
+        border: none;
+        background: transparent;
+        padding: 0.75rem 0;
+        border-radius: 0;
+      }
+      .debrief { border-left-width: 3px; padding-left: 1rem; }
+
+      .voices { padding: 2rem 1rem; }
+      .ruling { padding: 2rem 1rem; }
+      .section-divider { padding-left: 1rem; padding-right: 1rem; }
     }
 
     /* ── Page header ──────────────────────────────────────────── */

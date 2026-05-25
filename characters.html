@@ -158,6 +158,30 @@
       *, *::before, *::after {
         max-width: 100vw;
       }
+
+      /* Reduce section padding on mobile */
+      .char-grid, .featured, .page-nav {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      /* Strip card chrome on mobile */
+      .char-card {
+        border: none;
+        background: transparent;
+        border-radius: 0;
+      }
+      .card-header {
+        border-bottom: none;
+        padding: 0.75rem 0 0.5rem;
+      }
+      .card-body {
+        padding: 0 0 0.75rem;
+      }
+      .featured-card-inner { grid-template-columns: 1fr; }
+      .featured-content { padding: 1rem; }
+      .featured-photo { min-height: 200px; }
+      .section-divider { padding-left: 1rem; padding-right: 1rem; }
     }
 
     /* ── Page header ──────────────────────────────────────────── */

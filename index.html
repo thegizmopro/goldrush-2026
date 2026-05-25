@@ -178,6 +178,37 @@
       *, *::before, *::after {
         max-width: 100vw;
       }
+
+      /* Reduce section padding on mobile */
+      .intro, .section-cards, .page-nav {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      /* Strip card chrome on mobile */
+      .act-card {
+        border: none;
+        background: rgba(255,255,255,0.03);
+        padding: 1rem 0;
+        border-radius: 0;
+      }
+      .card {
+        border: none;
+        background: transparent;
+        border-radius: 0;
+      }
+      .card-thumb { height: 140px; }
+      .person-card.featured {
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+      }
+      .person-card { padding: 1rem 0; }
+      .person-photo { width: 120px; height: 120px; }
+      .acts { padding: 2rem 1rem; }
+      .people { padding: 2rem 1rem; }
+      .section-divider { padding-left: 1rem; padding-right: 1rem; }
     }
 
     /* ── Hero ─────────────────────────────────────────────────── */
