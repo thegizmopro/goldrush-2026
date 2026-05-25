@@ -73,6 +73,39 @@
         padding: 0.75rem 1rem;
         border-bottom: 1px solid rgba(200,169,110,0.1);
       }
+
+      /* Map image — responsive */
+      .map-wrapper img {
+        width: 100%;
+        max-width: 800px;
+      }
+
+      /* Legend — wrap nicely */
+      .legend {
+        padding: 0.75rem 1rem;
+        gap: 0.4rem 1rem;
+      }
+
+      /* Panel photos — flexible sizing */
+      .panel-photos img {
+        width: 100%;
+        max-width: 180px;
+        height: auto;
+      }
+      .photo-placeholder {
+        width: 100%;
+        max-width: 180px;
+        height: 120px;
+        flex: 1 1 140px;
+      }
+
+      /* Video rows — ensure they don't overflow */
+      .video-row video {
+        flex: 1 1 100%;
+      }
+      .video-row.single video {
+        max-width: 100%;
+      }
     }
 
     h1 {

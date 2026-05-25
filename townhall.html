@@ -114,6 +114,34 @@
         padding: 0.75rem 1rem;
         border-bottom: 1px solid rgba(200,169,110,0.1);
       }
+
+      /* Page header */
+      .page-header {
+        padding: 2.5rem 1.25rem 2rem;
+      }
+      .section-divider h2 {
+        white-space: normal;
+      }
+
+      /* Photo strips */
+      .photo-strip img,
+      .photo-placeholder {
+        height: 150px;
+        flex: 1 1 150px;
+      }
+
+      /* Testimony video grids */
+      .testimony-videos.multi {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .testimony-videos.single {
+        max-width: 100%;
+      }
+
+      /* Aside card — stack on narrow screens */
+      .aside-card-inner {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* ── Page header ──────────────────────────────────────────── */
@@ -1067,6 +1095,18 @@
   }
   .slideshow-thumbs img:hover { opacity: 1; }
   .slideshow-thumbs img.active { border-color: var(--gold); opacity: 1; }
+
+  @media (max-width: 768px) {
+    .slide-btn {
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+    }
+    .slideshow-thumbs img {
+      width: 54px;
+      height: 40px;
+    }
+  }
 </style>
 
 <script>
