@@ -522,6 +522,7 @@
   <a class="legend-item" onclick="showPanel('store')"><span class="legend-dot"></span> General Store</a>
   <a class="legend-item" onclick="showPanel('schoolhouse')"><span class="legend-dot"></span> Schoolhouse</a>
   <a class="legend-item" onclick="showPanel('creek')"><span class="legend-dot"></span> Panning Area</a>
+  <a class="legend-item" onclick="showPanel('town')"><span class="legend-dot"></span> Town</a>
 </div>
 
 <!-- ── Location panels ── -->
@@ -692,8 +693,7 @@
       <li><strong>David Stokes</strong> — Invented the steerable hydraulic monitor. Born in Switzerland. Died at 39.</li>
     </ul>
     <div class="panel-photos">
-      <div class="photo-placeholder">Add photos from<br>cemetery/</div>
-      <div class="photo-placeholder">Add photos from<br>cemetery/</div>
+      <img src="images/cemetery/Jaqc108.webp" alt="North Bloomfield Cemetery" onclick="openLightbox(this)">
     </div>
   </div>
 
@@ -784,6 +784,30 @@
         <button class="panel-slide-btn" onclick="museumSlide(1)">&#8594;</button>
       </div>
       <div class="panel-slideshow-thumbs" id="museum-thumbs"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-town">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>Around Town</h2>
+    <p>Misc photos from around North Bloomfield.</p>
+    <div class="panel-photos">
+      <img src="images/town/Jaqc43.webp" alt="North Bloomfield" onclick="openLightbox(this)">
+      <img src="images/town/Jaqc44.webp" alt="North Bloomfield" onclick="openLightbox(this)">
+      <img src="images/town/Jaqc48.webp" alt="North Bloomfield" onclick="openLightbox(this)">
+      <img src="images/town/Jaqc72.webp" alt="North Bloomfield" onclick="openLightbox(this)">
+    </div>
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="town-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="townSlide(-1)">&#8592;</button>
+        <img id="town-img" src="" alt="Town photo">
+        <button class="panel-slide-btn" onclick="townSlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="town-thumbs"></div>
     </div>
   </div>
 
@@ -1066,6 +1090,35 @@
 
   function schoolhouseSlide(d) { schoolhouseGoTo(schoolhouseCur + d); }
   schoolhouseGoTo(0);
+
+  // Town slideshow
+  const townSlides = [
+    "Jaqc43.webp","Jaqc44.webp","Jaqc48.webp","Jaqc72.webp"
+  ].map(f => "images/town/" + f);
+
+  let townCur = 0;
+  const townImg = document.getElementById("town-img");
+  const townCounter = document.getElementById("town-counter");
+  const townThumbs = document.getElementById("town-thumbs");
+
+  townSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => townGoTo(i);
+    townThumbs.appendChild(t);
+  });
+
+  function townGoTo(n) {
+    townCur = (n + townSlides.length) % townSlides.length;
+    townImg.src = townSlides[townCur];
+    townCounter.textContent = (townCur + 1) + " of " + townSlides.length;
+    townThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === townCur));
+    if (townCur !== 0 || townImg.dataset.init) townThumbs.querySelectorAll("img")[townCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    townImg.dataset.init = "1";
+  }
+
+  function townSlide(d) { townGoTo(townCur + d); }
+  townGoTo(0);
 </script>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
