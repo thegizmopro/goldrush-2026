@@ -241,6 +241,7 @@
     .pin-cemetery      { left: 35.6%; top: 29.0%; }
     .pin-creek         { left: 21.0%; top: 74.8%; }
     .pin-museum        { left: 64.0%; top: 43.0%; }
+    .pin-schoolhouse   { left: 46.0%; top: 18.0%; }
 
     /* Legend */
     .legend {
@@ -500,6 +501,10 @@
     <div class="pin-label">General Store</div>
   </div>
 
+  <div class="pin pin-schoolhouse" onclick="showPanel('schoolhouse')">
+    <div class="pin-dot"></div>
+    <div class="pin-label">Schoolhouse</div>
+  </div>
   <div class="pin pin-creek"      onclick="showPanel('creek')">
     <div class="pin-dot"></div>
     <div class="pin-label">Panning Area</div>
@@ -514,6 +519,7 @@
   <a class="legend-item" onclick="showPanel('blacksmith')"><span class="legend-dot"></span> Blacksmith Shop</a>
   <a class="legend-item" onclick="showPanel('museum')"><span class="legend-dot"></span> Museum</a>
   <a class="legend-item" onclick="showPanel('store')"><span class="legend-dot"></span> General Store</a>
+  <a class="legend-item" onclick="showPanel('schoolhouse')"><span class="legend-dot"></span> Schoolhouse</a>
   <a class="legend-item" onclick="showPanel('creek')"><span class="legend-dot"></span> Panning Area</a>
 </div>
 
@@ -540,6 +546,7 @@
         <div class="video-row">
           <video controls><source src="images/town/saloon/Saloon-Fight.mp4" type="video/mp4"></video>
           <video controls><source src="images/town/saloon/Saloon-Fight-2.mp4" type="video/mp4"></video>
+          <video controls><source src="images/town/saloon/saloon-fight2.mp4" type="video/mp4"></video>
         </div>
       </div>
 
@@ -589,6 +596,12 @@
     <div class="panel-photos">
       <img src="images/town/general-store/IMG_0877_result_result.webp" alt="General Store">
       <img src="images/town/general-store/IMG_0882_result_result.webp" alt="General Store">
+      <img src="images/town/letters-received (1).webp" alt="Letters received">
+      <img src="images/town/letters-received (2).webp" alt="Letters received">
+      <img src="images/town/letters-received (3).webp" alt="Letters received">
+      <img src="images/town/letters-received (4).webp" alt="Letters received">
+      <img src="images/town/gaia-gold (69)_result.webp" alt="General Store">
+      <img src="images/town/gaia-gold (70)_result.webp" alt="General Store">
     </div>
 
     <div class="panel-slideshow">
@@ -727,6 +740,28 @@
     </div>
   </div>
 
+  <div class="panel" id="panel-schoolhouse">
+    <button class="close-panel" onclick="closePanel()">✕ close</button>
+    <h2>The Schoolhouse</h2>
+    <p>North Bloomfield's one-room schoolhouse served the children of miners, merchants, and townspeople through the height of the Gold Rush era. Education on the frontier was practical and brief — most children worked alongside their parents well before finishing any formal schooling.</p>
+    <div class="panel-photos">
+      <img src="images/town/schoolhouse/gaia-gold (72)_result.webp" alt="Schoolhouse">
+      <img src="images/town/schoolhouse/gaia-gold (73)_result.webp" alt="Schoolhouse">
+    </div>
+    <div class="panel-slideshow">
+      <div class="panel-slideshow-header">
+        <span>All Photos</span>
+        <span id="schoolhouse-counter" class="panel-slideshow-counter"></span>
+      </div>
+      <div class="panel-slideshow-stage">
+        <button class="panel-slide-btn" onclick="schoolhouseSlide(-1)">&#8592;</button>
+        <img id="schoolhouse-img" src="" alt="Schoolhouse photo">
+        <button class="panel-slide-btn" onclick="schoolhouseSlide(1)">&#8594;</button>
+      </div>
+      <div class="panel-slideshow-thumbs" id="schoolhouse-thumbs"></div>
+    </div>
+  </div>
+
   <div class="panel" id="panel-museum">
     <button class="close-panel" onclick="closePanel()">✕ close</button>
     <h2>Museum &amp; Visitor Center</h2>
@@ -783,7 +818,10 @@
     "IMG_3430_result.webp","IMG_3431_result.webp","IMG_3432_result.webp",
     "IMG_9601_result_result.webp","IMG_9618_result_result.webp","IMG_9619_result_result.webp",
     "PXL_20260514_180707662_result.webp","PXL_20260514_180714499_result.webp",
-    "PXL_20260514_180716061.MP_result.webp"
+    "PXL_20260514_180716061.MP_result.webp",
+    "gaia-gold (18)_result.webp","gaia-gold (19)_result.webp","gaia-gold (60)_result.webp",
+    "gaia-gold (65)_result.webp","gaia-gold (66)_result.webp","gaia-gold (67)_result.webp",
+    "gaia-gold (71)_result.webp"
   ].map(f => "images/town/saloon/" + f);
 
   let saloonCur = 0;
@@ -859,7 +897,11 @@
     "IMG_3319_result_result.webp","IMG_3320_result_result.webp","IMG_3321_result_result.webp",
     "IMG_3322_result_result.webp","IMG_6970_result_result.webp","IMG_6971_result_result.webp",
     "IMG_6972_result_result.webp","IMG_6973_result_result.webp","IMG_6974_result_result.webp",
-    "IMG_6975_result_result.webp","IMG_6976_result_result.webp","IMG_6977_result_result.webp"
+    "IMG_6975_result_result.webp","IMG_6976_result_result.webp","IMG_6977_result_result.webp",
+    "gaia-gold (83)_result.webp","gaia-gold (84)_result.webp","gaia-gold (85)_result.webp",
+    "gaia-gold (86)_result.webp","gaia-gold (87)_result.webp",
+    "immy-creek (1)_result.webp","immy-creek (2)_result.webp",
+    "immy-creek (3)_result.webp","immy-creek (4)_result.webp"
   ].map(f => "images/creek/" + f);
 
   let creekCur = 0;
@@ -959,7 +1001,8 @@
     "IMG_0926_result_result.webp","IMG_0927_result_result.webp","IMG_3298_result_result.webp",
     "IMG_3299_result_result.webp","PXL_20260514_170352390.MP_result.webp","PXL_20260514_170400334_result.webp",
     "PXL_20260514_170514104_result.webp","PXL_20260514_170738983_result.webp","PXL_20260514_171337865_result.webp",
-    "PXL_20260514_171741982_result.webp","PXL_20260514_172046094_result.webp"
+    "PXL_20260514_171741982_result.webp","PXL_20260514_172046094_result.webp",
+    "gaia-gold (68)_result.webp"
   ].map(f => "images/town/museum/" + f);
 
   let museumCur = 0;
@@ -985,6 +1028,36 @@
 
   function museumSlide(d) { museumGoTo(museumCur + d); }
   museumGoTo(0);
+
+  // Schoolhouse slideshow
+  const schoolhouseSlides = [
+    "gaia-gold (72)_result.webp","gaia-gold (73)_result.webp","gaia-gold (74)_result.webp",
+    "gaia-gold (75)_result.webp","gaia-gold (76)_result.webp"
+  ].map(f => "images/town/schoolhouse/" + f);
+
+  let schoolhouseCur = 0;
+  const schoolhouseImg = document.getElementById("schoolhouse-img");
+  const schoolhouseCounter = document.getElementById("schoolhouse-counter");
+  const schoolhouseThumbs = document.getElementById("schoolhouse-thumbs");
+
+  schoolhouseSlides.forEach((src, i) => {
+    const t = document.createElement("img");
+    t.src = src; t.alt = "";
+    t.onclick = () => schoolhouseGoTo(i);
+    schoolhouseThumbs.appendChild(t);
+  });
+
+  function schoolhouseGoTo(n) {
+    schoolhouseCur = (n + schoolhouseSlides.length) % schoolhouseSlides.length;
+    schoolhouseImg.src = schoolhouseSlides[schoolhouseCur];
+    schoolhouseCounter.textContent = (schoolhouseCur + 1) + " of " + schoolhouseSlides.length;
+    schoolhouseThumbs.querySelectorAll("img").forEach((t, i) => t.classList.toggle("active", i === schoolhouseCur));
+    if (schoolhouseCur !== 0 || schoolhouseImg.dataset.init) schoolhouseThumbs.querySelectorAll("img")[schoolhouseCur].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    schoolhouseImg.dataset.init = "1";
+  }
+
+  function schoolhouseSlide(d) { schoolhouseGoTo(schoolhouseCur + d); }
+  schoolhouseGoTo(0);
 </script>
 
 </body>
