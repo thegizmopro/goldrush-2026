@@ -854,6 +854,7 @@
 
     footer strong { color: var(--gold); }
   </style>
+  <link rel="stylesheet" href="lightbox.css">
 </head>
 <body>
 
@@ -889,16 +890,16 @@
 </div>
 
 <div class="photo-strip">
-  <img src="images/diggings/IMG_0996_result_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/IMG_1003_result_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/PXL_20260515_182330468_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/gaia-gold (7)_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/gaia-gold (8)_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/gaia-gold (9)_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/gaia-gold (77)_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/gaia-gold (78)_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/gaia-gold (79)_result.webp" alt="Malakoff Diggings">
-  <img src="images/diggings/gaia-gold (81)_result.webp" alt="Malakoff Diggings">
+  <img src="images/diggings/IMG_0996_result_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/IMG_1003_result_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/PXL_20260515_182330468_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/gaia-gold (7)_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/gaia-gold (8)_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/gaia-gold (9)_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/gaia-gold (77)_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/gaia-gold (78)_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/gaia-gold (79)_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
+  <img src="images/diggings/gaia-gold (81)_result.webp" alt="Malakoff Diggings" onclick="openLightbox(this)">
 </div>
 
 
@@ -1198,8 +1199,8 @@
 </div>
 
 <div class="photo-strip">
-  <img src="images/yuba-river/20260513_130058_result.webp" alt="Yuba River">
-  <img src="images/yuba-river/IMG_0830_result_result.webp" alt="Yuba River">
+  <img src="images/yuba-river/20260513_130058_result.webp" alt="Yuba River" onclick="openLightbox(this)">
+  <img src="images/yuba-river/IMG_0830_result_result.webp" alt="Yuba River" onclick="openLightbox(this)">
 </div>
 
 <div class="slideshow-wrap">
@@ -1266,6 +1267,12 @@
   <strong>Gold Rush Field Trip 2026</strong><br>
   Salmon Creek School · 4th Grade · Malakoff Diggins State Historic Park, CA
 </footer>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+  <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+<script src="lightbox.js"></script>
 
 </body>
 </html>

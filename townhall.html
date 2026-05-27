@@ -641,41 +641,6 @@
       margin-bottom: 0.75rem;
     }
 
-    /* ── Lightbox ────────────────────────────────────────────────── */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      cursor: zoom-out;
-    }
-    .lightbox.open { display: flex; }
-    .lightbox img {
-      max-width: 94vw;
-      max-height: 94vh;
-      object-fit: contain;
-      border-radius: 4px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.8);
-      cursor: default;
-    }
-    .lightbox-close {
-      position: absolute;
-      top: 1rem;
-      right: 1.25rem;
-      color: #fff;
-      font-size: 2rem;
-      line-height: 1;
-      cursor: pointer;
-      opacity: 0.7;
-      background: none;
-      border: none;
-    }
-    .lightbox-close:hover { opacity: 1; }
-    .photo-strip img { cursor: zoom-in; }
-
     /* ── Video testimony ─────────────────────────────────────────── */
     .video-testimony {
       max-width: 900px;
@@ -771,6 +736,7 @@
 
     footer strong { color: var(--gold); }
   </style>
+  <link rel="stylesheet" href="lightbox.css">
 </head>
 <body>
 
@@ -832,18 +798,7 @@
   <img src="images/town-hall/IMG_0970_result_result.webp" alt="Town Hall" onclick="openLightbox(this)">
 </div>
 
-<script>
-  function openLightbox(el) {
-    document.getElementById("lightbox-img").src = el.src;
-    document.getElementById("lightbox").classList.add("open");
-    document.body.style.overflow = "hidden";
-  }
-  function closeLightbox() {
-    document.getElementById("lightbox").classList.remove("open");
-    document.body.style.overflow = "";
-  }
-  document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
-</script>
+<script src="lightbox.js"></script>
 
 
 <!-- ── Interest groups ── -->

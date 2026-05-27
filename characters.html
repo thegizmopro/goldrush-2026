@@ -485,6 +485,7 @@
 
     footer strong { color: var(--gold); }
   </style>
+  <link rel="stylesheet" href="lightbox.css">
 </head>
 <body>
 
@@ -529,7 +530,7 @@
   <div class="featured-card" data-category="pioneer">
     <div class="featured-card-inner">
       <div class="featured-photo">
-        <img src="images/charactors/lola-montez.webp" alt="Lola Montez">
+        <img src="images/charactors/lola-montez.webp" alt="Lola Montez" onclick="openLightbox(this)">
         <video controls style="width:100%;margin-top:0.75rem;border-radius:4px;border:2px solid var(--gold);background:#000">
           <source src="images/charactors/lola.mp4" type="video/mp4">
         </video>
@@ -553,9 +554,9 @@
   <div class="featured-card" data-category="pioneer">
     <div class="featured-card-inner">
       <div class="featured-photo">
-        <img src="images/charactors/one-eyed-charlie.webp" alt="One-Eyed Charlie">
-        <img src="images/charactors/one-eyed-charlie2 (1).webp" alt="One-Eyed Charlie" style="margin-top:0.5rem">
-        <img src="images/charactors/one-eyed-charlie2 (2).webp" alt="One-Eyed Charlie" style="margin-top:0.5rem">
+        <img src="images/charactors/one-eyed-charlie.webp" alt="One-Eyed Charlie" onclick="openLightbox(this)">
+        <img src="images/charactors/one-eyed-charlie2 (1).webp" alt="One-Eyed Charlie" style="margin-top:0.5rem" onclick="openLightbox(this)">
+        <img src="images/charactors/one-eyed-charlie2 (2).webp" alt="One-Eyed Charlie" style="margin-top:0.5rem" onclick="openLightbox(this)">
         <video controls style="width:100%;margin-top:0.75rem;border-radius:4px;border:2px solid var(--gold);background:#000">
           <source src="images/charactors/one-eyed-charlie.mp4" type="video/mp4">
         </video>
@@ -577,7 +578,7 @@
   <!-- Black Bart -->
   <div class="featured-card" data-category="outlaw">
     <div class="featured-card-inner">
-      <div class="featured-photo"><img src="images/camp/campfire/IMG_3406_result.webp" alt="Black Bart"></div>
+      <div class="featured-photo"><img src="images/camp/campfire/IMG_3406_result.webp" alt="Black Bart" onclick="openLightbox(this)"></div>
       <div class="featured-content">
         <p class="eyebrow">Outlaw · California · 1829–1888(?)</p>
         <h2>Black Bart</h2>
@@ -969,6 +970,12 @@
     });
   }
 </script>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+  <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+<script src="lightbox.js"></script>
 
 </body>
 </html>
